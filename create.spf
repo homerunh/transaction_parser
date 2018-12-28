@@ -49,22 +49,27 @@
 			<integer>1</integer>
 			<key>contentSelection</key>
 			<data>
-			YnBsaXN0MDDUAQIDBAUGNjdYJHZlcnNpb25YJG9iamVjdHNZJGFy
-			Y2hpdmVyVCR0b3ASAAGGoK0HCBUWFxgZHSQoLDA0VSRudWxs0wkK
-			CwwQFFdOUy5rZXlzWk5TLm9iamVjdHNWJGNsYXNzow0OD4ACgAOA
-			BKMREhOABYAGgAiADFR0eXBlVHJvd3NUa2V5c18QJlNlbGVjdGlv
-			bkRldGFpbFR5cGVQcmltYXJ5S2V5ZWREZXRhaWxz0wkKCxobHKCg
-			gAfSHh8gIVokY2xhc3NuYW1lWCRjbGFzc2VzXxATTlNNdXRhYmxl
-			RGljdGlvbmFyeaMgIiNcTlNEaWN0aW9uYXJ5WE5TT2JqZWN00goL
-			JSehJoAJgAvSCykqK1lOUy5zdHJpbmeACllwbGF5ZXJfaWTSHh8t
-			Ll8QD05TTXV0YWJsZVN0cmluZ6MtLyNYTlNTdHJpbmfSHh8xMl5O
-			U011dGFibGVBcnJheaMxMyNXTlNBcnJhedIeHyI1oiIjXxAPTlNL
-			ZXllZEFyY2hpdmVy0Tg5VGRhdGGAAQAIABEAGgAjAC0AMgA3AEUA
-			SwBSAFoAZQBsAHAAcgB0AHYAegB8AH4AgACCAIcAjACRALoAwQDC
-			AMMAxQDKANUA3gD0APgBBQEOARMBFQEXARkBHgEoASoBNAE5AUsB
-			TwFYAV0BbAFwAXgBfQGAAZIBlQGaAAAAAAAAAgEAAAAAAAAAOgAA
-			AAAAAAAAAAAAAAAAAZw=
+			YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoK8QEAcIFRYXGBkfICEoLTE1ODxVJG51
+			bGzTCQoLDBAUV05TLmtleXNaTlMub2JqZWN0c1YkY2xhc3OjDQ4P
+			gAKAA4AEoxESE4AFgAaACoAPVHR5cGVUcm93c1RrZXlzXxAmU2Vs
+			ZWN0aW9uRGV0YWlsVHlwZVByaW1hcnlLZXllZERldGFpbHPTCQoL
+			GhweoRuAB6EdgAiACW8QHAAyADAAMQA4AF8AcAByAGUAcwBlAGEA
+			cwBvAG4AXwB0AHIAYQBkAGUAXwA4//gAMwAwADEAOAAwCdIiIyQl
+			WiRjbGFzc25hbWVYJGNsYXNzZXNfEBNOU011dGFibGVEaWN0aW9u
+			YXJ5oyQmJ1xOU0RpY3Rpb25hcnlYTlNPYmplY3TSCgspLKIqK4AL
+			gA2ADtILLi8wWU5TLnN0cmluZ4AMXxAPdHJhbnNhY3Rpb25fa2V5
+			0iIjMjNfEA9OU011dGFibGVTdHJpbmejMjQnWE5TU3RyaW5n0gsu
+			LzeADFlwbGF5ZXJfaWTSIiM5Ol5OU011dGFibGVBcnJheaM5OydX
+			TlNBcnJhedIiIyY9oiYnXxAPTlNLZXllZEFyY2hpdmVy0UBBVGRh
+			dGGAAQAIABEAGgAjAC0AMgA3AEoAUABXAF8AagBxAHUAdwB5AHsA
+			fwCBAIMAhQCHAIwAkQCWAL8AxgDIAMoAzADOANABCwEMAREBHAEl
+			ATsBPwFMAVUBWgFdAV8BYQFjAWgBcgF0AYYBiwGdAaEBqgGvAbEB
+			uwHAAc8B0wHbAeAB4wH1AfgB/QAAAAAAAAIBAAAAAAAAAEIAAAAA
+			AAAAAAAAAAAAAAH/
 			</data>
+			<key>contentSortCol</key>
+			<string>timestamp</string>
 			<key>contentSortColIsAsc</key>
 			<true/>
 			<key>contentViewport</key>
@@ -129,7 +134,7 @@ insert into `manager_league_team_assignment` VALUES
 
 select manager_id, count(*) from `manager_league_team_assignment` group by manager_id;
 
-delete from player;
+
 create table player(
 	`player_key` varchar(128) NOT NULL,
 	`player_id` varchar(128) NOT NULL,
@@ -141,7 +146,7 @@ create table player(
 	PRIMARY KEY(`player_id`)
 );
 
-delete from transaction_audit;
+
 create table transaction_audit(
 	`year` bigint(11) DEFAULT 0,
 	`transaction_key` VARCHAR(128) NOT NULL,
@@ -152,9 +157,20 @@ create table transaction_audit(
 	PRIMARY KEY(`transaction_key`, `player_id`),
 	FOREIGN KEY(player_id) REFERENCES player(player_id),
 	FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key)
-);</string>
+);
+
+
+delete from transaction_audit;
+delete from player;
+
+select * from `manager_league_team_assignment` where team_key='359.l.302857.t.8';
+
+select * 
+from manager m
+join `manager_league_team_assignment` mlta on m.`id`=mlta.`manager_id`
+where mlta.team_key like '%380%';</string>
 			<key>table</key>
-			<string>player</string>
+			<string>transaction_audit</string>
 			<key>view</key>
 			<string>SP_VIEW_CUSTOMQUERY</string>
 			<key>windowVerticalDividerPosition</key>
@@ -169,6 +185,16 @@ create table transaction_audit(
 	<array/>
 	<key>queryHistory</key>
 	<array>
+		<string>delete from transaction_audit;
+delete from player</string>
+		<string>select * 
+from manager m
+join `manager_league_team_assignment` mlta on m.`id`=mlta.`manager_id`
+where mlta.team_key like '%380%'</string>
+		<string>select * 
+from manager m
+join `manager_league_team_assignment` mlta on m.`id`=mlta.`manager_id`</string>
+		<string>select * from `manager_league_team_assignment` where team_key='359.l.302857.t.8'</string>
 		<string>delete from player</string>
 		<string>delete from transaction_audit</string>
 		<string>truncate player</string>
@@ -319,12 +345,6 @@ insert into `manager_league_team_assignment` VALUES
 )</string>
 		<string>select manager_id, count(*) from `manager_league_team_assignment` group by manager_id</string>
 		<string>select *, count(*) from `manager_league_team_assignment` group by manager_id</string>
-		<string>select *, count(*accessible) from `manager_league_team_assignment` group by manager_id</string>
-		<string>select * from `manager_league_team_assignment` group by manager_id</string>
-		<string>truncate `manager_league_team_assignment`</string>
-		<string>insert into `manager_league_team_assignment` VALUES
-	(9, "359.l.302857.t.1"),
-	(10, "359.l.302857.t.3")</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>

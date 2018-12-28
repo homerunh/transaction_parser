@@ -50,7 +50,7 @@ def get_bearer_token():
 			code = input("Input an access code: ")
 			return request_token(code).json()['access_token']
 		else:
-			print("TOKEN: %s" % details['response']['access_token'])
+			#print("TOKEN: %s" % details['response']['access_token'])
 			return details['response']['access_token']
 
 		

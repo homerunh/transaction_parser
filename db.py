@@ -28,7 +28,8 @@ def testing_testing_123(the_sql_string):
 
 def insert_player(player):
 	db = conn()
-	print("insering player: %s" % player.player_key)
+	print("\ninsering player: %s" % player.player_key)
+	player.printME()
 	try:
 		with db.cursor() as cursor:
 			sql = "INSERT IGNORE INTO `player` VALUES (%s, %s, %s, %s, %s, %s, %s)"
@@ -42,6 +43,8 @@ def insert_player(player):
 
 def insert_transaction(transaction):
 	db = conn()
+	print("\ninserting transaction: %s" %transaction.transaction_key)
+	transaction.printME()
 	try:
 		with db.cursor() as cursor:
 			sql = "INSERT IGNORE INTO `transaction_audit` VALUES (%s, %s, %s, %s, %s, %s)"
