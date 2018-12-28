@@ -3,9 +3,12 @@ import requests
 import auth
 import constants
 
+def urlify(list_of_params):
+	return "/".join(list_of_params)
+
 
 def get_player_info(year, player_id):
-	url = "https://fantasysports.yahooapis.com/fantasy/v2/player/%s.p.%s" % (constants.YEAR_PREFIX[year], player_id)
+	url = urlify([constants.API_BASE_URL, "player", "%s.p.%s" % (constants.YEAR_PREFIX[year], player_id)]) 
 
 	querystring = {"format":"json"}
 
@@ -22,7 +25,7 @@ def get_player_info(year, player_id):
 	return response
 
 def get_player_info_by_key(player_key):
-	url = "https://fantasysports.yahooapis.com/fantasy/v2/player/%s" % (player_key)
+	url = urlify([constants.API_BASE_URL, "player", player_key])
 
 	querystring = {"format":"json"}
 
@@ -39,7 +42,7 @@ def get_player_info_by_key(player_key):
 	return response
 
 def get_draft_results(year):
-	url = "https://fantasysports.yahooapis.com/fantasy/v2/league/%s/draftresults" % constants.LEAGUE_LOOKUP[year]
+	url = urlify([constants.API_BASE_URL, "league", constants.LEAGUE_LOOKUP[year], "draftresults"])
 
 	querystring = {"format":"json"}
 
@@ -56,7 +59,7 @@ def get_draft_results(year):
 	return response
 
 def get_league_transactions(year):
-	url = "https://fantasysports.yahooapis.com/fantasy/v2/league/%s/transactions" % constants.LEAGUE_LOOKUP[year]
+	url = urlify([constants.API_BASE_URL, "league", constants.LEAGUE_LOOKUP[year], "transactions"])
 
 	querystring = {"format":"json"}
 
@@ -70,4 +73,22 @@ def get_league_transactions(year):
 	response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
 
 	# print(response.text)
+	return response
+
+
+def get_team_roster(team_key):
+	url = urlify([constants.API_BASE_URL, "team", team_key, "roster", "players"])
+
+	querystring = {"format":"json"}
+
+	payload = ""
+	headers = {
+	    'Authorization': "bearer " + auth.get_bearer_token(),
+	    'cache-control': "no-cache",
+	    'Postman-Token': "9ca3433a-736d-4524-9f6d-4c17e498f96c"
+	    }
+
+	response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+
+	print(response.text)
 	return response

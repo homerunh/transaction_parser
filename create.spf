@@ -44,7 +44,22 @@
 			<key>connectionEncoding</key>
 			<string>latin1</string>
 			<key>contentFilter</key>
-			<dict/>
+			<dict>
+				<key>filterComparison</key>
+				<string>=</string>
+				<key>filterComparisonTag</key>
+				<integer>0</integer>
+				<key>filterField</key>
+				<string>year</string>
+				<key>filterValue</key>
+				<string>2018</string>
+				<key>firstBetweenField</key>
+				<string></string>
+				<key>menuLabel</key>
+				<string>`year` = '2018'</string>
+				<key>secondBetweenField</key>
+				<string></string>
+			</dict>
 			<key>contentPageNumber</key>
 			<integer>1</integer>
 			<key>contentSelection</key>
@@ -54,26 +69,26 @@
 			bGzTCQoLDBAUV05TLmtleXNaTlMub2JqZWN0c1YkY2xhc3OjDQ4P
 			gAKAA4AEoxESE4AFgAaACoAPVHR5cGVUcm93c1RrZXlzXxAmU2Vs
 			ZWN0aW9uRGV0YWlsVHlwZVByaW1hcnlLZXllZERldGFpbHPTCQoL
-			GhweoRuAB6EdgAiACW8QHAAyADAAMQA4AF8AcAByAGUAcwBlAGEA
-			cwBvAG4AXwB0AHIAYQBkAGUAXwA4//gAMwAwADEAOAAwCdIiIyQl
-			WiRjbGFzc25hbWVYJGNsYXNzZXNfEBNOU011dGFibGVEaWN0aW9u
-			YXJ5oyQmJ1xOU0RpY3Rpb25hcnlYTlNPYmplY3TSCgspLKIqK4AL
-			gA2ADtILLi8wWU5TLnN0cmluZ4AMXxAPdHJhbnNhY3Rpb25fa2V5
-			0iIjMjNfEA9OU011dGFibGVTdHJpbmejMjQnWE5TU3RyaW5n0gsu
-			LzeADFlwbGF5ZXJfaWTSIiM5Ol5OU011dGFibGVBcnJheaM5OydX
-			TlNBcnJhedIiIyY9oiYnXxAPTlNLZXllZEFyY2hpdmVy0UBBVGRh
-			dGGAAQAIABEAGgAjAC0AMgA3AEoAUABXAF8AagBxAHUAdwB5AHsA
-			fwCBAIMAhQCHAIwAkQCWAL8AxgDIAMoAzADOANABCwEMAREBHAEl
-			ATsBPwFMAVUBWgFdAV8BYQFjAWgBcgF0AYYBiwGdAaEBqgGvAbEB
-			uwHAAc8B0wHbAeAB4wH1AfgB/QAAAAAAAAIBAAAAAAAAAEIAAAAA
-			AAAAAAAAAAAAAAH/
+			GhweoRuAB6EdgAiACW8QFwAzADgAMAAuAGwALgAxADEAMAA3ADQA
+			LgB0AHIALgAxADL/+AAzADEAMQAzADcJ0iIjJCVaJGNsYXNzbmFt
+			ZVgkY2xhc3Nlc18QE05TTXV0YWJsZURpY3Rpb25hcnmjJCYnXE5T
+			RGljdGlvbmFyeVhOU09iamVjdNIKCyksoiorgAuADYAO0gsuLzBZ
+			TlMuc3RyaW5ngAxfEA90cmFuc2FjdGlvbl9rZXnSIiMyM18QD05T
+			TXV0YWJsZVN0cmluZ6MyNCdYTlNTdHJpbmfSCy4vN4AMWXBsYXll
+			cl9pZNIiIzk6Xk5TTXV0YWJsZUFycmF5ozk7J1dOU0FycmF50iIj
+			Jj2iJidfEA9OU0tleWVkQXJjaGl2ZXLRQEFUZGF0YYABAAgAEQAa
+			ACMALQAyADcASgBQAFcAXwBqAHEAdQB3AHkAewB/AIEAgwCFAIcA
+			jACRAJYAvwDGAMgAygDMAM4A0AEBAQIBBwESARsBMQE1AUIBSwFQ
+			AVMBVQFXAVkBXgFoAWoBfAGBAZMBlwGgAaUBpwGxAbYBxQHJAdEB
+			1gHZAesB7gHzAAAAAAAAAgEAAAAAAAAAQgAAAAAAAAAAAAAAAAAA
+			AfU=
 			</data>
 			<key>contentSortCol</key>
 			<string>timestamp</string>
 			<key>contentSortColIsAsc</key>
 			<true/>
 			<key>contentViewport</key>
-			<string>{{0, 0}, {846, 638}}</string>
+			<string>{{0, 1366}, {846, 640}}</string>
 			<key>isToolbarVisible</key>
 			<true/>
 			<key>queries</key>
@@ -86,9 +101,6 @@
 alter table manager 
 add column email varchar(128) NOT NULL;
 
-create table league_team(
-	
-);
 
 create table manager_league_team_assignment(
 	`manager_id` bigint(11) NOT NULL,
@@ -97,7 +109,7 @@ create table manager_league_team_assignment(
 	FOREIGN KEY(manager_id) REFERENCES manager(id)
 );
 
-truncate `manager_league_team_assignment`;
+
 drop table `manager_league_team_assignment`;
 insert into `manager_league_team_assignment` VALUES
 	( 9, "359.l.302857.t.1"),
@@ -159,7 +171,16 @@ create table transaction_audit(
 	FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key)
 );
 
+drop table current_roster;
+create table current_roster(
+	`team_key` varchar(128) NOT NULL,
+	`player_id` varchar(128) NOT NULL,
+	PRIMARY KEY(`team_key`, `player_id`),
+	FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key),
+	FOREIGN KEY(player_id) REFERENCES player(player_id)
+);
 
+delete from current_roster;
 delete from transaction_audit;
 delete from player;
 
@@ -168,7 +189,57 @@ select * from `manager_league_team_assignment` where team_key='359.l.302857.t.8'
 select * 
 from manager m
 join `manager_league_team_assignment` mlta on m.`id`=mlta.`manager_id`
-where mlta.team_key like '%380%';</string>
+where mlta.team_key like '%380%';
+
+# missing rookie draft players?
+select * 
+from current_roster cr
+join player p on p.player_id=cr.player_id
+left join transaction_audit ta on ta.player_id=cr.player_id
+where ta.year is null;
+
+# current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'
+;
+
+#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id;
+
+select distinct player_id from transaction_audit;
+-- player_id 27556
+select * 
+from transaction_audit ta
+where player_id='27556'
+order by timestamp desc
+limit 1
+;</string>
 			<key>table</key>
 			<string>transaction_audit</string>
 			<key>view</key>
@@ -185,166 +256,262 @@ where mlta.team_key like '%380%';</string>
 	<array/>
 	<key>queryHistory</key>
 	<array>
-		<string>delete from transaction_audit;
-delete from player</string>
+		<string>select manager_id, count(*) from `manager_league_team_assignment` group by manager_id</string>
+		<string># missing rookie draft players?
+select * 
+from current_roster cr
+join player p on p.player_id=cr.player_id
+left join transaction_audit ta on ta.player_id=cr.player_id
+where ta.year is null</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.team_key=mlta.team_key</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id</string>
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
 		<string>select * 
 from manager m
 join `manager_league_team_assignment` mlta on m.`id`=mlta.`manager_id`
 where mlta.team_key like '%380%'</string>
-		<string>select * 
-from manager m
-join `manager_league_team_assignment` mlta on m.`id`=mlta.`manager_id`</string>
-		<string>select * from `manager_league_team_assignment` where team_key='359.l.302857.t.8'</string>
-		<string>delete from player</string>
-		<string>delete from transaction_audit</string>
-		<string>truncate player</string>
-		<string>create table transaction_audit(
-	`year` bigint(11) DEFAULT 0,
-	`transaction_key` VARCHAR(128) NOT NULL,
-	`player_id` varchar(128) NOT NULL,
-	`team_key` varchar(128) NOT NULL,
-	`transaction_type` varchar(128) NOT NULL,
-	`timestamp` DATETIME NOT NULL,
-	PRIMARY KEY(`transaction_key`, `player_id`),
-	FOREIGN KEY(player_id) REFERENCES player(player_id),
-	FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key)
+		<string>delete from current_roster;
+delete from transaction_audit;
+delete from player</string>
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'
+where ta.X = (
+	select player_id from transaction_audit with max(timstamp)
 )</string>
-		<string>create table transaction_audit(
-	`year` bigint(11) DEFAULT 0,
-	`transaction_key` VARCHAR(128) NOT NULL,
-	`player_id` varchar(128) NOT NULL,
-	`team_key` varchar(128) NOT NULL,
-	`transaction_type` varchar(128) NOT NULL,
-	`timestamp` DATETIME NOT NULL,
-	PRIMARY KEY(`transaction_key`, `player_id`),
-	FOREIGN KEY(player_id) REFERENCES player(player_id)
-	FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key)
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'
+where ta.X = (
+	select player_id from transaction_audit order by timestamp limit 1
 )</string>
-		<string>insert into `manager_league_team_assignment` VALUES
-	( 9, "359.l.302857.t.1"),
-	( 1, "359.l.302857.t.2"),
-	( 6, "359.l.302857.t.3"),
-	( 3, "359.l.302857.t.4"),
-	( 7, "359.l.302857.t.5"),
-	( 5, "359.l.302857.t.6"),
-	( 2, "359.l.302857.t.7"),
-	( 8, "359.l.302857.t.8"),
-	( 4, "359.l.302857.t.9"),
-	( 10, "359.l.302857.t.10"),
-	( 9, "371.l.15908.t.1"),
-	( 5, "371.l.15908.t.2"),
-	( 8, "371.l.15908.t.3"),
-	( 6, "371.l.15908.t.4"),
-	( 7, "371.l.15908.t.5"),
-	( 4, "371.l.15908.t.6"),
-	( 1, "371.l.15908.t.7"),
-	( 10, "371.l.15908.t.8"),
-	( 2, "371.l.15908.t.9"),
-	( 3, "371.l.15908.t.10"),
-	( 9, "380.l.11074.t.1"),
-	( 5, "380.l.11074.t.2"),
-	( 7, "380.l.11074.t.3"),
-	( 6, "380.l.11074.t.4"),
-	( 8, "380.l.11074.t.5"),
-	( 10, "380.l.11074.t.6"),
-	( 2, "380.l.11074.t.7"),
-	( 1, "380.l.11074.t.8"),
-	( 4, "380.l.11074.t.9"),
-	( 3, "380.l.11074.t.10")</string>
-		<string>create table manager_league_team_assignment(
-	`manager_id` bigint(11) NOT NULL,
-	`team_key` varchar(128) NOT NULL,
-	PRIMARY KEY (`team_key`),
-	FOREIGN KEY(manager_id) REFERENCES manager(id)
-)</string>
-		<string>drop table `manager_league_team_assignment`</string>
-		<string>drop table `manager_league_team_assignment`
-insert into `manager_league_team_assignment` VALUES
-	( 9, "359.l.302857.t.1"),
-	( 1, "359.l.302857.t.2"),
-	( 6, "359.l.302857.t.3"),
-	( 3, "359.l.302857.t.4"),
-	( 7, "359.l.302857.t.5"),
-	( 5, "359.l.302857.t.6"),
-	( 2, "359.l.302857.t.7"),
-	( 8, "359.l.302857.t.8"),
-	( 4, "359.l.302857.t.9"),
-	( 10, "359.l.302857.t.10"),
-	( 9, "371.l.15908.t.1"),
-	( 5, "371.l.15908.t.2"),
-	( 8, "371.l.15908.t.3"),
-	( 6, "371.l.15908.t.4"),
-	( 7, "371.l.15908.t.5"),
-	( 4, "371.l.15908.t.6"),
-	( 1, "371.l.15908.t.7"),
-	( 10, "371.l.15908.t.8"),
-	( 2, "371.l.15908.t.9"),
-	( 3, "371.l.15908.t.10"),
-	( 9, "380.l.11074.t.1"),
-	( 5, "380.l.11074.t.2"),
-	( 7, "380.l.11074.t.3"),
-	( 6, "380.l.11074.t.4"),
-	( 8, "380.l.11074.t.5"),
-	( 10, "380.l.11074.t.6"),
-	( 2, "380.l.11074.t.7"),
-	( 1, "380.l.11074.t.8"),
-	( 4, "380.l.11074.t.9"),
-	( 3, "380.l.11074.t.10")</string>
-		<string>create table transaction_audit(
-	`year` bigint(11) DEFAULT 0,
-	`transaction_key` VARCHAR(128) NOT NULL,
-	`player_id` varchar(128) NOT NULL,
-	`team_key` varchar(128) NOT NULL,
-	`transaction_type` varchar(128) NOT NULL,
-	`timestamp` DATETIME NOT NULL,
-	PRIMARY KEY(`transaction_key`, `player_id`),
-	FOREIGN KEY(player_id) REFERENCES player(player_id)
-	#FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key)
-)</string>
-		<string>create table transaction_audit(
-	`year` bigint(11) DEFAULT 0,
-	`transaction_key` VARCHAR(128) NOT NULL,
-	`player_id` varchar(128) NOT NULL,
-	`team_key` varchar(128) NOT NULL,
-	`transaction_type` varchar(128) NOT NULL,
-	`timestamp` DATETIME NOT NULL,
-	PRIMARY KEY(`transaction_key`, `player_id`),
-	FOREIGN KEY(player_id) REFERENCES player(player_id),
-	#FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key)
-)</string>
-		<string>create table transaction_audit(
-	`year` bigint(11) DEFAULT 0,
-	`transaction_key` VARCHAR(128) NOT NULL,
-	`player_id` varchar(128) NOT NULL,
-	`team_key` varchar(128) NOT NULL,
-	`transaction_type` varchar(128) NOT NULL,
-	`timestamp` DATETIME NOT NULL,
-	PRIMARY KEY(`transaction_key`, `player_key`),
-	FOREIGN KEY(player_id) REFERENCES player(player_id),
-	FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key)
-)</string>
-		<string>create table player(
-	`player_key` varchar(128) NOT NULL,
-	`player_id` varchar(128) NOT NULL,
-	`first_name` varchar(128) NOT NULL,
-	`last_name` varchar(128) NOT NULL,
-	`full_name` varchar(128) NOT NULL,
-	`nfl_team` varchar(128) NOT NULL,
-	`position` varchar(128) NOT NULL,
-	PRIMARY KEY(`player_id`)
-)</string>
-		<string>create table player(
-	`player_key` varchar(128) NOT NULL,
-	`player_id` varchar(128) NOT NULL,
-	`first_name` varchar(128) NOT NULL,
-	`last_name` varchar(128) NOT NULL,
-	`full_name` varchar(128) NOT NULL,
-	`nfl_team` varchar(128) NOT NULL,
-	`position` varchar(128) NOT NULL,
-	PRIMARY KEY(`player_key`)
-)</string>
-		<string>select manager_id, count(*) from `manager_league_team_assignment` group by manager_id</string>
-		<string>select *, count(*) from `manager_league_team_assignment` group by manager_id</string>
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+-- 	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+where ta.X='24860'</string>
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+-- 	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+where ta.X='24860'</string>
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+where ta.X='30614'</string>
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */</string>
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+order by ta.`timestamp` desc</string>
+		<string>#
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+order by ta.`timestamp` desc</string>
+		<string>#
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+order by ta.`timestamp`</string>
+		<string>#
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+order by ta.`transaction_type`</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>

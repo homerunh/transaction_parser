@@ -14,3 +14,5 @@ YEAR_PREFIX = {
 	'2017': '371',
 	'2018': '380'
 }
+
+API_BASE_URL = 'https://fantasysports.yahooapis.com/fantasy/v2'

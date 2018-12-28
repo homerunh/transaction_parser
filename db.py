@@ -53,3 +53,16 @@ def insert_transaction(transaction):
 		print("Failed to insert transaction: %s" % err)
 	finally:
 		db.close()
+
+def insert_player_current_roster(player, team_key):
+	db = conn()
+	print("\ninserting player: %s" % player.player_key)
+	player.printME()
+	try:
+		with db.cursor() as cursor:
+			sql = "INSERT IGNORE INTO `current_roster` VALUES (%s, %s)"
+			cursor.execute(sql, (team_key, player.player_id))
+	except Exception as err:
+		print("Failed to inster transaction: %s" % err)
+	finally:
+		db.close()

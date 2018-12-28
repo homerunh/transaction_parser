@@ -149,7 +149,7 @@ def sync_draft_results(year):
         #p.printME()
         db.insert_player(p)
 
-        draft_transaction = transaction(year, "draft_pick_%s" % pick, p.player_id, team_key, 'startup_draft_pick', draft_day_timestamp)
+        draft_transaction = transaction(year, "draft_pick_%s" % pick, p.player_id, team_key, 'startup_draft_pick_add', draft_day_timestamp)
         # draft_transaction.printME()
         db.insert_transaction(draft_transaction)
 
@@ -182,6 +182,7 @@ def create_player_model_from_player_endpoint(player_json):
     return nfl_player(player_key, player_id, first_name, last_name, full_name, nfl_team, position)
 
 
+
 def sync_rookie_draft_from_file():
 
     draft_day_timestamp = datetime.datetime.fromtimestamp(int('1531584000'))
@@ -206,7 +207,6 @@ def sync_rookie_draft_from_file():
         draft_day_timestamp = draft_day_timestamp + datetime.timedelta(seconds=1)
 
 def sync_offseason_trade_from_file():
-    # draft_day_timestamp = datetime.datetime.fromtimestamp(int('1531585000'))
     pick = 1
 
     reader = csv.reader(open('2018_preseason_trades.csv'), delimiter=',')
@@ -224,15 +224,65 @@ def sync_offseason_trade_from_file():
         draft_transaction = transaction(2018, "2018_preseason_trade_%s" % pick, p.player_id, team_key, '2018_preseason_trade_add', draft_day_timestamp)
         # draft_transaction.printME()
         db.insert_transaction(draft_transaction)
+    
 
         pick = pick + 1
-        # draft_day_timestamp = draft_day_timestamp + datetime.timedelta(seconds=1)
+        
 
-sync_draft_results('2016')
-sync_transactions('2016')
-sync_transactions('2017')
-sync_rookie_draft_from_file()
-sync_offseason_trade_from_file()
-sync_transactions('2018')
+def sync_current_roster(team_key):
+    roster_json = api.get_team_roster(team_key).json()
+    players = roster_json['fantasy_content']['team'][1]['roster']['0']['players']
+    team_key = roster_json['fantasy_content']['team'][0][0]['team_key']
 
+    for i in range(0, players['count']):
+        player_key = players[str(i)]['player'][0][0]['player_key']
+        player_id = players[str(i)]['player'][0][1]['player_id']
+        first_name = players[str(i)]['player'][0][2]['name']['first']
+        last_name = players[str(i)]['player'][0][2]['name']['last']
+        full_name = players[str(i)]['player'][0][2]['name']['full']
+        try:
+            nfl_team = players[str(i)]['player'][0][7]['editorial_team_abbr']
+        except:
+            for j in range(0, len(players[str(i)]['player'][0])):
+                if type(players[str(i)]['player'][0][j]) is dict and 'editorial_team_abbr' in players[str(i)]['player'][0][j].keys():
+                    nfl_team = players[str(i)]['player'][0][j]['editorial_team_abbr']
+                    break
+        try:
+            position = players[str(i)]['player'][0][10]['display_position']
+        except:
+            for j in range(0, len(players[str(i)]['player'][0])):
+                if type(players[str(i)]['player'][0][j]) is dict and 'display_position' in players[str(i)]['player'][0][j].keys():
+                    position = players[str(i)]['player'][0][j]['display_position']
+                    break
+
+
+        p = nfl_player(player_key, player_id, first_name, last_name, full_name, nfl_team, position)        
+        # p.printME()
+        # print(team_key)
+        db.insert_player(p)
+        db.insert_player_current_roster(p, team_key)
+
+def sync_rosters():
+    teams = ['380.l.11074.t.1',\
+    '380.l.11074.t.2',\
+    '380.l.11074.t.3',\
+    '380.l.11074.t.4',\
+    '380.l.11074.t.5',\
+    '380.l.11074.t.6',\
+    '380.l.11074.t.7',\
+    '380.l.11074.t.8',\
+    '380.l.11074.t.9',\
+    '380.l.11074.t.10']
+
+    for team in teams:
+        sync_current_roster(team)
+
+def spin_up_new():
+    sync_draft_results('2016')
+    sync_transactions('2016')
+    sync_transactions('2017')
+    sync_rookie_draft_from_file()
+    sync_offseason_trade_from_file()
+    sync_transactions('2018')
+    sync_rosters()
 
