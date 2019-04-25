@@ -44,51 +44,34 @@
 			<key>connectionEncoding</key>
 			<string>latin1</string>
 			<key>contentFilter</key>
-			<dict>
-				<key>filterComparison</key>
-				<string>=</string>
-				<key>filterComparisonTag</key>
-				<integer>0</integer>
-				<key>filterField</key>
-				<string>year</string>
-				<key>filterValue</key>
-				<string>2018</string>
-				<key>firstBetweenField</key>
-				<string></string>
-				<key>menuLabel</key>
-				<string>`year` = '2018'</string>
-				<key>secondBetweenField</key>
-				<string></string>
-			</dict>
+			<dict/>
 			<key>contentPageNumber</key>
 			<integer>1</integer>
 			<key>contentSelection</key>
 			<data>
-			YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFy
-			Y2hpdmVyVCR0b3ASAAGGoK8QEAcIFRYXGBkfICEoLTE1ODxVJG51
-			bGzTCQoLDBAUV05TLmtleXNaTlMub2JqZWN0c1YkY2xhc3OjDQ4P
-			gAKAA4AEoxESE4AFgAaACoAPVHR5cGVUcm93c1RrZXlzXxAmU2Vs
-			ZWN0aW9uRGV0YWlsVHlwZVByaW1hcnlLZXllZERldGFpbHPTCQoL
-			GhweoRuAB6EdgAiACW8QFwAzADgAMAAuAGwALgAxADEAMAA3ADQA
-			LgB0AHIALgAxADL/+AAzADEAMQAzADcJ0iIjJCVaJGNsYXNzbmFt
-			ZVgkY2xhc3Nlc18QE05TTXV0YWJsZURpY3Rpb25hcnmjJCYnXE5T
-			RGljdGlvbmFyeVhOU09iamVjdNIKCyksoiorgAuADYAO0gsuLzBZ
-			TlMuc3RyaW5ngAxfEA90cmFuc2FjdGlvbl9rZXnSIiMyM18QD05T
-			TXV0YWJsZVN0cmluZ6MyNCdYTlNTdHJpbmfSCy4vN4AMWXBsYXll
-			cl9pZNIiIzk6Xk5TTXV0YWJsZUFycmF5ozk7J1dOU0FycmF50iIj
-			Jj2iJidfEA9OU0tleWVkQXJjaGl2ZXLRQEFUZGF0YYABAAgAEQAa
-			ACMALQAyADcASgBQAFcAXwBqAHEAdQB3AHkAewB/AIEAgwCFAIcA
-			jACRAJYAvwDGAMgAygDMAM4A0AEBAQIBBwESARsBMQE1AUIBSwFQ
-			AVMBVQFXAVkBXgFoAWoBfAGBAZMBlwGgAaUBpwGxAbYBxQHJAdEB
-			1gHZAesB7gHzAAAAAAAAAgEAAAAAAAAAQgAAAAAAAAAAAAAAAAAA
-			AfU=
+			YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoK4HCBUWFxgZHSQpLTE0OFUkbnVsbNMJ
+			CgsMEBRXTlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6MNDg+AAoAD
+			gASjERITgAWABoAIgA1UdHlwZVRyb3dzVGtleXNfECZTZWxlY3Rp
+			b25EZXRhaWxUeXBlUHJpbWFyeUtleWVkRGV0YWlsc9MJCgsaGxyg
+			oIAH0h4fICFaJGNsYXNzbmFtZVgkY2xhc3Nlc18QE05TTXV0YWJs
+			ZURpY3Rpb25hcnmjICIjXE5TRGljdGlvbmFyeVhOU09iamVjdNIK
+			CyUooiYngAmAC4AM0gsqKyxZTlMuc3RyaW5ngApfEA90cmFuc2Fj
+			dGlvbl9rZXnSHh8uL18QD05TTXV0YWJsZVN0cmluZ6MuMCNYTlNT
+			dHJpbmfSCyorM4AKWXBsYXllcl9pZNIeHzU2Xk5TTXV0YWJsZUFy
+			cmF5ozU3I1dOU0FycmF50h4fIjmiIiNfEA9OU0tleWVkQXJjaGl2
+			ZXLRPD1UZGF0YYABAAgAEQAaACMALQAyADcARgBMAFMAWwBmAG0A
+			cQBzAHUAdwB7AH0AfwCBAIMAiACNAJIAuwDCAMMAxADGAMsA1gDf
+			APUA+QEGAQ8BFAEXARkBGwEdASIBLAEuAUABRQFXAVsBZAFpAWsB
+			dQF6AYkBjQGVAZoBnQGvAbIBtwAAAAAAAAIBAAAAAAAAAD4AAAAA
+			AAAAAAAAAAAAAAG5
 			</data>
 			<key>contentSortCol</key>
 			<string>timestamp</string>
 			<key>contentSortColIsAsc</key>
 			<true/>
 			<key>contentViewport</key>
-			<string>{{0, 1366}, {846, 640}}</string>
+			<string>{{0, 0}, {846, 617}}</string>
 			<key>isToolbarVisible</key>
 			<true/>
 			<key>queries</key>
@@ -192,9 +175,11 @@ join `manager_league_team_assignment` mlta on m.`id`=mlta.`manager_id`
 where mlta.team_key like '%380%';
 
 # missing rookie draft players?
-select * 
+select m.name, cr.*, p.* 
 from current_roster cr
 join player p on p.player_id=cr.player_id
+join `manager_league_team_assignment` mlta on mlta.team_key = cr.`team_key`
+join manager m on m.id = mlta.`manager_id`
 left join transaction_audit ta on ta.player_id=cr.player_id
 where ta.year is null;
 
@@ -217,8 +202,9 @@ join player p on p.player_id=cr.player_id
 
 #current players with an add record...  also with contract expires in timing
 #attempt 2 at this query (attemp 1 above this)
-select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
-from (
+select cr.team_key, ta.team_key, m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, ta.timestamp as 'transaction timestamp', DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from current_roster cr
+join (
 	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
 	from transaction_audit t
 	join player p1 on p1.player_id=t.player_id
@@ -226,11 +212,11 @@ from (
 	and t.timestamp = (
 		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
 	)
-) as ta 
-join current_roster cr on cr.player_id=ta.X
+) as ta on cr.player_id=ta.X
 join player p on p.player_id=cr.player_id
 join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
-join manager m on m.id=mlta.manager_id;
+join manager m on m.id=mlta.manager_id
+;
 
 select distinct player_id from transaction_audit;
 -- player_id 27556
@@ -256,7 +242,159 @@ limit 1
 	<array/>
 	<key>queryHistory</key>
 	<array>
-		<string>select manager_id, count(*) from `manager_league_team_assignment` group by manager_id</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select cr.team_key, ta.team_key, m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, ta.timestamp as 'transaction timestamp', DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from current_roster cr
+join (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id</string>
+		<string># current players WITH a transaction_audit 'add' record
+select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select cr.team_key, ta.team_key, m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, ta.timestamp as 'transaction timestamp', DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from current_roster cr
+join (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta on cr.player_id=ta.X
+-- join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select cr.team_key, ta.team_key, m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, ta.timestamp as 'transaction timestamp', DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from current roster cr
+join (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta on cr.player_id=ta.X
+-- join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select cr.team_key, ta.team_key, m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, ta.timestamp as 'transaction timestamp', DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, ta.timestamp as 'transaction timestamp', DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, ta.timestamp as 'transaction timestamp', DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id
+where cr.`team_key`=ta.`team_key`</string>
+		<string># missing rookie draft players?
+select m.name, cr.*, p.* 
+from current_roster cr
+join player p on p.player_id=cr.player_id
+join `manager_league_team_assignment` mlta on mlta.team_key = cr.`team_key`
+join manager m on m.id = mlta.`manager_id`
+left join transaction_audit ta on ta.player_id=cr.player_id
+where ta.year is null</string>
+		<string># missing rookie draft players?
+select m.name, cr.*, p.*, ta.* 
+from current_roster cr
+join player p on p.player_id=cr.player_id
+join `manager_league_team_assignment` mlta on mlta.team_key = cr.`team_key`
+join manager m on m.id = mlta.`manager_id`
+left join transaction_audit ta on ta.player_id=cr.player_id
+where ta.year is null</string>
+		<string># missing rookie draft players?
+select m.name, * 
+from current_roster cr
+join player p on p.player_id=cr.player_id
+join `manager_league_team_assignment` mlta on mlta.team_key = cr.`team_key`
+join manager m on m.id = mlta.`manager_id`
+left join transaction_audit ta on ta.player_id=cr.player_id
+where ta.year is null</string>
+		<string># missing rookie draft players?
+select * 
+from current_roster cr
+join player p on p.player_id=cr.player_id
+join `manager_league_team_assignment` mlta on mlta.team_key = cr.`team_key`
+join manager m on m.id = mlta.`manager_id`
+left join transaction_audit ta on ta.player_id=cr.player_id
+where ta.year is null</string>
+		<string># missing rookie draft players?
+select * 
+from current_roster cr
+join player p on p.player_id=cr.player_id
+join `manager_league_team_assignment` mlta on mlta.team_key = cr.`team_key`
+left join transaction_audit ta on ta.player_id=cr.player_id
+where ta.year is null</string>
 		<string># missing rookie draft players?
 select * 
 from current_roster cr
@@ -265,7 +403,41 @@ left join transaction_audit ta on ta.player_id=cr.player_id
 where ta.year is null</string>
 		<string>#current players with an add record...  also with contract expires in timing
 #attempt 2 at this query (attemp 1 above this)
-select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+-- select m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, ta.timestamp as 'transaction timestamp', DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+select m.name, count(*)
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id
+group by m.name</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.id=mlta.manager_id</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select m.`name`, ta.year, ta.transaction_key, ta.transaction_type, p.player_id, p.full_name, p.nfl_team,p.position, e, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
 from (
 	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
 	from transaction_audit t
@@ -294,224 +466,27 @@ from (
 join current_roster cr on cr.player_id=ta.X
 join player p on p.player_id=cr.player_id
 join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
-join manager m on m.team_key=mlta.team_key</string>
-		<string>#current players with an add record...  also with contract expires in timing
-#attempt 2 at this query (attemp 1 above this)
-select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.timestamp = (
-		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
-	)
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-join manager_league_team_assignment mlta on mlta.team_key=cr.team_key</string>
-		<string>#current players with an add record...  also with contract expires in timing
-#attempt 2 at this query (attemp 1 above this)
-select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.timestamp = (
-		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
-	)
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id</string>
-		<string># current players WITH a transaction_audit 'add' record
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
--- 	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-/* order by ta.`timestamp` desc */
--- where ta.X='24860'</string>
-		<string>select * 
-from manager m
-join `manager_league_team_assignment` mlta on m.`id`=mlta.`manager_id`
-where mlta.team_key like '%380%'</string>
+join manager m on m.id=mlta.manager_id</string>
 		<string>delete from current_roster;
 delete from transaction_audit;
 delete from player</string>
-		<string># current players WITH a transaction_audit 'add' record
-select *
+		<string>select manager_id, count(*) from `manager_league_team_assignment` group by manager_id</string>
+		<string>#current players with an add record...  also with contract expires in timing
+#attempt 2 at this query (attemp 1 above this)
+select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
 from (
 	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
 	from transaction_audit t
 	join player p1 on p1.player_id=t.player_id
 	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
--- 	order by t.timestamp desc
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
 ) as ta 
 join current_roster cr on cr.player_id=ta.X
 join player p on p.player_id=cr.player_id
-/* order by ta.`timestamp` desc */
--- where ta.X='24860'
-where ta.X = (
-	select player_id from transaction_audit with max(timstamp)
-)</string>
-		<string># current players WITH a transaction_audit 'add' record
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
--- 	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-/* order by ta.`timestamp` desc */
--- where ta.X='24860'
-where ta.X = (
-	select player_id from transaction_audit order by timestamp limit 1
-)</string>
-		<string># current players WITH a transaction_audit 'add' record
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
--- 	and t.`transaction_type` like '%add%'
-	group by t.player_id
--- 	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-/* order by ta.`timestamp` desc */
--- where ta.X='24860'</string>
-		<string># current players WITH a transaction_audit 'add' record
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
--- 	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-/* order by ta.`timestamp` desc */
-where ta.X='24860'</string>
-		<string># current players WITH a transaction_audit 'add' record
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
--- 	and t.`transaction_type` like '%add%'
-	group by t.player_id
--- 	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-/* order by ta.`timestamp` desc */
-where ta.X='24860'</string>
-		<string># current players WITH a transaction_audit 'add' record
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
--- 	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-/* order by ta.`timestamp` desc */
-where ta.X='30614'</string>
-		<string># current players WITH a transaction_audit 'add' record
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
--- 	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-/* order by ta.`timestamp` desc */</string>
-		<string># current players WITH a transaction_audit 'add' record
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
--- 	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-order by ta.`timestamp` desc</string>
-		<string>#
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
-	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-order by ta.`timestamp` desc</string>
-		<string>#
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
-	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-order by ta.`timestamp`</string>
-		<string>#
-select *
-from (
-	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
-	from transaction_audit t
-	join player p1 on p1.player_id=t.player_id
-	where t.player_id=p1.`player_id`
-	and t.`transaction_type` like '%add%'
-	group by t.player_id
-	order by t.timestamp desc
-) as ta 
-join current_roster cr on cr.player_id=ta.X
-join player p on p.player_id=cr.player_id
-order by ta.`transaction_type`</string>
+join manager_league_team_assignment mlta on mlta.team_key=cr.team_key
+join manager m on m.team_key=mlta.team_key</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>

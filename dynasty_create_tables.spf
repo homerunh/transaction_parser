@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>database</key>
+			<string>dynasty</string>
+			<key>host</key>
+			<string>127.0.0.1</string>
+			<key>kcid</key>
+			<string>-8182734255530523257</string>
+			<key>name</key>
+			<string>Dynasty</string>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>dynasty_admin</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>utf8</string>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJX
+			TlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAF
+			gAdUdHlwZVRyb3dzXxAdU2VsZWN0aW9uRGV0YWlsVHlwZU5TSW5k
+			ZXhTZXTSFwsYGVxOU1JhbmdlQ291bnQQAIAG0hscHR5aJGNsYXNz
+			bmFtZVgkY2xhc3Nlc1pOU0luZGV4U2V0oh8gWk5TSW5kZXhTZXRY
+			TlNPYmplY3TSGxwiI1xOU0RpY3Rpb25hcnmiIiBfEA9OU0tleWVk
+			QXJjaGl2ZXLRJidUZGF0YYABAAgAEQAaACMALQAyADcAQABGAE0A
+			VQBgAGcAagBsAG4AcQBzAHUAdwB8AIEAoQCmALMAtQC3ALwAxwDQ
+			ANsA3gDpAPIA9wEEAQcBGQEcASEAAAAAAAACAQAAAAAAAAAoAAAA
+			AAAAAAAAAAAAAAABIw==
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {694, 450}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>## Create statements for the dynasty database tables
+
+create table manager(
+	`id` bigint(11) auto_increment,
+	`name` VARCHAR(128) NOT NULL,
+	PRIMARY KEY(`id`)
+);
+
+alter table manager 
+add column email varchar(128) NOT NULL;
+
+
+create table manager_league_team_assignment(
+	`manager_id` bigint(11) NOT NULL,
+	`team_key` varchar(128) NOT NULL,
+	PRIMARY KEY (`team_key`),
+	FOREIGN KEY(manager_id) REFERENCES manager(id)
+);
+
+
+drop table `manager_league_team_assignment`;
+insert into `manager_league_team_assignment` VALUES
+	( 9, "359.l.302857.t.1"),
+	( 1, "359.l.302857.t.2"),
+	( 6, "359.l.302857.t.3"),
+	( 3, "359.l.302857.t.4"),
+	( 7, "359.l.302857.t.5"),
+	( 5, "359.l.302857.t.6"),
+	( 2, "359.l.302857.t.7"),
+	( 8, "359.l.302857.t.8"),
+	( 4, "359.l.302857.t.9"),
+	( 10, "359.l.302857.t.10"),
+	( 9, "371.l.15908.t.1"),
+	( 5, "371.l.15908.t.2"),
+	( 8, "371.l.15908.t.3"),
+	( 6, "371.l.15908.t.4"),
+	( 7, "371.l.15908.t.5"),
+	( 4, "371.l.15908.t.6"),
+	( 1, "371.l.15908.t.7"),
+	( 10, "371.l.15908.t.8"),
+	( 2, "371.l.15908.t.9"),
+	( 3, "371.l.15908.t.10"),
+	( 9, "380.l.11074.t.1"),
+	( 5, "380.l.11074.t.2"),
+	( 7, "380.l.11074.t.3"),
+	( 6, "380.l.11074.t.4"),
+	( 8, "380.l.11074.t.5"),
+	( 10, "380.l.11074.t.6"),
+	( 2, "380.l.11074.t.7"),
+	( 1, "380.l.11074.t.8"),
+	( 4, "380.l.11074.t.9"),
+	( 3, "380.l.11074.t.10")
+;
+
+select manager_id, count(*) from `manager_league_team_assignment` group by manager_id;
+
+
+create table player(
+	`player_key` varchar(128) NOT NULL,
+	`player_id` varchar(128) NOT NULL,
+	`first_name` varchar(128) NOT NULL,
+	`last_name` varchar(128) NOT NULL,
+	`full_name` varchar(128) NOT NULL,
+	`nfl_team` varchar(128) NOT NULL,
+	`position` varchar(128) NOT NULL,
+	PRIMARY KEY(`player_id`)
+);
+
+
+create table transaction_audit(
+	`year` bigint(11) DEFAULT 0,
+	`transaction_key` VARCHAR(128) NOT NULL,
+	`player_id` varchar(128) NOT NULL,
+	`team_key` varchar(128) NOT NULL,
+	`transaction_type` varchar(128) NOT NULL,
+	`timestamp` DATETIME NOT NULL,
+	PRIMARY KEY(`transaction_key`, `player_id`),
+	FOREIGN KEY(player_id) REFERENCES player(player_id),
+	FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key)
+);
+
+drop table current_roster;
+create table current_roster(
+	`team_key` varchar(128) NOT NULL,
+	`player_id` varchar(128) NOT NULL,
+	PRIMARY KEY(`team_key`, `player_id`),
+	FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key),
+	FOREIGN KEY(player_id) REFERENCES player(player_id)
+);</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>200</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string>select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id</string>
+		<string>select * 
+from current_roster cr 
+join player p on p.player_id = cr.player_id
+join `manager_league_team_assignment` mlta on mlta.`team_key`=cr.`team_key`
+join manager m on m.id = mlta.manager_id
+where manager_id=6</string>
+		<string>select *, DATE_ADD(ta.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+-- 	and t.`transaction_type` like '%add%'
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+-- 	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
+		<string>select *, DATE_ADD(t.timestamp, INTERVAL 3 YEAR) as 'contract expires'
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+-- 	and t.`transaction_type` like '%add%'
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+-- 	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
+		<string>select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+-- 	and t.`transaction_type` like '%add%'
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id and t.`transaction_type` like '%add%'
+	)
+-- 	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
+		<string>select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+-- 	and t.`transaction_type` like '%add%'
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id
+	)
+-- 	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
+		<string>select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	and t.timestamp = (
+		select max(timestamp) from transaction_audit t2 where t2.player_id=t.player_id
+	)
+-- 	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
+		<string>select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+-- 	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
+		<string>select *
+from (
+	select t.player_id as 'X', t.year, t.`team_key`, t.`transaction_key`, t.`transaction_type`, t.`timestamp`
+	from transaction_audit t
+	join player p1 on p1.player_id=t.player_id
+	where t.player_id=p1.`player_id`
+	and t.`transaction_type` like '%add%'
+	group by t.player_id
+-- 	order by t.timestamp desc
+) as ta 
+join current_roster cr on cr.player_id=ta.X
+join player p on p.player_id=cr.player_id
+/* order by ta.`timestamp` desc */
+-- where ta.X='24860'</string>
+		<string>select * from transaction_audit where player_id='23999' with max(timestamp)</string>
+		<string>select * from transaction_audit where player_id='23999'</string>
+		<string>select * from transaction_audit where player_id='27756'</string>
+		<string>-- player_id 27556
+select * 
+from transaction_audit ta
+where player_id='27556'
+order by timestamp desc
+limit 1</string>
+		<string>select * 
+from current_roster cr 
+join player p on p.player_id = cr.player_id
+join `manager_league_team_assignment` mlta on mlta.`team_key`=cr.`team_key`
+join manager m on m.id = mlta.manager_id</string>
+		<string>join `manager_league_team_assignment` mlta on mlta.`team_key`=cr.`team_key`
+join manager m on m.id = mlta.manager_id</string>
+		<string>select * 
+from current_roster cr 
+join player p on p.player_id = cr.player_id</string>
+		<string>insert into `manager_league_team_assignment` VALUES
+	( 9, "359.l.302857.t.1"),
+	( 1, "359.l.302857.t.2"),
+	( 6, "359.l.302857.t.3"),
+	( 3, "359.l.302857.t.4"),
+	( 7, "359.l.302857.t.5"),
+	( 5, "359.l.302857.t.6"),
+	( 2, "359.l.302857.t.7"),
+	( 8, "359.l.302857.t.8"),
+	( 4, "359.l.302857.t.9"),
+	( 10, "359.l.302857.t.10"),
+	( 9, "371.l.15908.t.1"),
+	( 5, "371.l.15908.t.2"),
+	( 8, "371.l.15908.t.3"),
+	( 6, "371.l.15908.t.4"),
+	( 7, "371.l.15908.t.5"),
+	( 4, "371.l.15908.t.6"),
+	( 1, "371.l.15908.t.7"),
+	( 10, "371.l.15908.t.8"),
+	( 2, "371.l.15908.t.9"),
+	( 3, "371.l.15908.t.10"),
+	( 9, "380.l.11074.t.1"),
+	( 5, "380.l.11074.t.2"),
+	( 7, "380.l.11074.t.3"),
+	( 6, "380.l.11074.t.4"),
+	( 8, "380.l.11074.t.5"),
+	( 10, "380.l.11074.t.6"),
+	( 2, "380.l.11074.t.7"),
+	( 1, "380.l.11074.t.8"),
+	( 4, "380.l.11074.t.9"),
+	( 3, "380.l.11074.t.10")</string>
+		<string>truncate `manager_league_team_assignment`</string>
+		<string>insert into `manager_league_team_assignment` VALUES
+	(9, "359.l.302857.t.1"),
+	(10, "359.l.302857.t.3")</string>
+		<string>insert into `manager_league_team_assignment` VALUES (
+	(9, "359.l.302857.t.1"),
+	(10, "359.l.302857.t.3")
+	
+)</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>5.5.5-10.1.37-MariaDB</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>

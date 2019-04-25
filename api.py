@@ -76,8 +76,8 @@ def get_league_transactions(year):
 	return response
 
 
-def get_team_roster(team_key):
-	url = urlify([constants.API_BASE_URL, "team", team_key, "roster", "players"])
+def get_team_players(team_key):
+	url = urlify([constants.API_BASE_URL, "team", team_key, "players"])
 
 	querystring = {"format":"json"}
 
@@ -90,5 +90,5 @@ def get_team_roster(team_key):
 
 	response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
 
-	print(response.text)
+	# print(response.text)
 	return response

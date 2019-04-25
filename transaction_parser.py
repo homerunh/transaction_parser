@@ -230,8 +230,8 @@ def sync_offseason_trade_from_file():
         
 
 def sync_current_roster(team_key):
-    roster_json = api.get_team_roster(team_key).json()
-    players = roster_json['fantasy_content']['team'][1]['roster']['0']['players']
+    roster_json = api.get_team_players(team_key).json()
+    players = roster_json['fantasy_content']['team'][1]['players']
     team_key = roster_json['fantasy_content']['team'][0][0]['team_key']
 
     for i in range(0, players['count']):
