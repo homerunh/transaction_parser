@@ -346,6 +346,8 @@ def do_league_manager_recon():
 
 def get_scoreboard_for_league_week(year, week_number):
     data = api.get_league_scoreboard_for_week(year, week_number).json()
+    league_year = league = int(data['fantasy_content']['league'][0]['season'])
+    league_key = league = data['fantasy_content']['league'][0]['league_key']
     matchups = data['fantasy_content']['league'][1]['scoreboard']['0']['matchups']
     matchup_count = matchups['count']
 
@@ -379,7 +381,9 @@ def get_scoreboard_for_league_week(year, week_number):
             team_key_2 = 'NONE'
             team_2_points = 0.0
 
-        m = league_week_matchup(int(week), \
+        m = league_week_matchup(league_key, \
+            league_year, \
+            int(week), \
             week_start, \
             status, \
             int(is_playoffs), \
@@ -404,3 +408,5 @@ def do_matchup_recon():
 
 # do_league_manager_recon()
 # do_matchup_recon()
+
+get_scoreboard_for_league_week('2018', 16)

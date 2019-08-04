@@ -117,7 +117,10 @@ create table manager_league_team_assignment(
 
 -- select manager_id, count(*) from `manager_league_team_assignment` group by manager_id;
 truncate league_week_matchup;
+drop table league_week_matchup;
 create table league_week_matchup(
+  league_key varchar(128) NOT NULL,
+  league_year bigint(11) default 0,
   week bigint(11), 
   week_start DATE NOT NULL,
   status varchar(128),
@@ -129,7 +132,11 @@ create table league_week_matchup(
   team_key_1 varchar(128) NOT NULL,
   team_1_points DECIMAL(9,2) default '0.00',
   team_key_2 varchar(128) NOT NULL,
-  team_2_points DECIMAL(9,2) default '0.00'
+  team_2_points DECIMAL(9,2) default '0.00',
+  PRIMARY KEY(league_year, week, team_key_1, team_key_2),
+  FOREIGN KEY(league_key) REFERENCES league_details(league_key),
+  FOREIGN KEY(team_key_1) REFERENCES team_manager(team_key),
+  FOREIGN KEY(team_key_2) REFERENCES team_manager(team_key)
 );
 
 create table player(

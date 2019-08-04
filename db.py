@@ -6,6 +6,7 @@ from models.team_manager import team_manager
 from models.league_details import league_details
 from models.league_week_matchup import league_week_matchup
 import creds
+import constants
 
 
 def conn():
@@ -129,8 +130,10 @@ def insert_league_week_matchup(league_week_matchup):
 	print("\ninstering into league week matchup for week %s" % league_week_matchup.week)
 	try:
 		with db.cursor() as cursor:
-			sql = "INSERT INTO `league_week_matchup` VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-			cursor.execute(sql, (league_week_matchup.week, \
+			sql = "INSERT INTO `league_week_matchup` VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+			cursor.execute(sql, (league_week_matchup.league_key, \
+				league_week_matchup.league_year, \
+				league_week_matchup.week, \
 				league_week_matchup.week_start, \
 				league_week_matchup.status, \
 				league_week_matchup.is_playoffs, \
@@ -153,7 +156,12 @@ def get_league_details():
 	db = conn()
 	try:
 		with db.cursor() as cursor:
-			cursor.execute("SELECT * FROM `league_details`")
+			sql = "SELECT * FROM `league_details` where league_key in (%s)"
+			args = list(constants.LEAGUE_LOOKUP.values())
+			in_p = ', '.join(list(map(lambda x: '%s', args)))
+			sql = sql % in_p
+			
+			cursor.execute(sql, args)
 			result = cursor.fetchall()
 			for row in result:
 				details.append(league_details(row['league_key'], \
