@@ -34,14 +34,50 @@ insert ignore into `manager` VALUES
 (19, "Jared Groot", ""),
 (20, "Anuj Singh", ""),
 (21, "Austin Morris", ""),
-(22, "Ricky Randall", "");
+(22, "Ricky Randall", ""),
+(23, "Mike Harrington", ""),
+(24, "Dylan McKenzie", ""),
+(25, "Ed Bailey", ""),
+(26, "Stefan", ""),
+(27, "Seth Rogers", ""),
+(28, "Joe Gilbert", ""),
+(29, "Chris Quarterman", ""),
+(30, "Keith", ""),
+(31, "Cavin Keys", ""),
+(32, "Tucker", "");
 
+create table league_details (
+	`league_key` varchar(128) NOT NULL,
+    `league_id` varchar(128) NOT NULL,
+    `league_name` varchar(128) not null,
+    `start_week` bigint(11) NOT NULL,
+    `start_date` DATE NOT NULL,
+    `end_week` bigint(11) NOT NULL,
+    `end_date` DATE NOT NULL,
+    `league_year` bigint(11) default 0,
+    `team_count` bigint(11) default 0,
+    PRIMARY KEY(`league_key`)
+);
+
+create table team_manager (
+	`team_key` varchar(128) NOT NULL,
+    `team_name` varchar(128) NOT NULL,
+    `number_of_moves` bigint(11) default 0,
+    `number_of_trades` bigint(11) default 0,
+    `nickname` varchar(128),
+    `guid` varchar(128) NOT NULL,
+    `email` varchar(128) NOT NULL,
+    PRIMARY KEY (`team_key`)
+);
 
 create table manager_league_team_assignment(
 	`manager_id` bigint(11) NOT NULL,
 	`team_key` varchar(128) NOT NULL,
 	PRIMARY KEY (`team_key`),
-	FOREIGN KEY(manager_id) REFERENCES manager(id)
+	FOREIGN KEY(manager_id) REFERENCES manager(id),
+    FOREIGN KEY(team_key) REFERENCES team_manager(team_key)
+		on delete cascade
+        on update cascade
 );
 
 

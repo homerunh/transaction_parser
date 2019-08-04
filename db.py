@@ -2,6 +2,8 @@ import pymysql
 
 from models.nfl_player import nfl_player
 from models.transaction import transaction
+from models.team_manager import team_manager
+from models.league_details import league_details
 import creds
 
 
@@ -65,5 +67,57 @@ def insert_player_current_roster(player, team_key):
 			cursor.execute(sql, (team_key, player.player_id))
 	except Exception as err:
 		print("Failed to inster transaction: %s" % err)
+	finally:
+		db.close()
+
+def insert_team_manager(team_manager):
+	db = conn()
+	print("\ninserting team: %s" % team_manager.team_key)
+	team_manager.printME()
+	try:
+		with db.cursor() as cursor:
+			sql = "INSERT INTO `team_manager` VALUES (%s, %s, %s, %s, %s, %s, %s)"
+			cursor.execute(sql, (team_manager.team_key, \
+			 team_manager.team_name, \
+			 team_manager.number_of_moves, \
+			 team_manager.number_of_trades, \
+			 team_manager.nickname, \
+			 team_manager.guid, \
+			 team_manager.email))
+	except Exception as err:
+		print("Failed to insert team_manager: %s" % err)
+	finally:
+		db.close()
+
+def insert_league_details(league_details):
+	db = conn()
+	print("\ninserting league details: %s" % league_details.league_key)
+	league_details.printME()
+	try:
+		with db.cursor() as cursor:
+			sql = "INSERT INTO `league_details` VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+			cursor.execute(sql, (league_details.league_key, \
+				league_details.league_id, \
+				league_details.league_name, \
+				league_details.start_week, \
+				league_details.start_date, \
+				league_details.end_week, \
+				league_details.end_date, \
+				league_details.league_year, \
+				league_details.team_count))
+	except Exception as err:
+		print("Failed to insert league details %s" % err)
+	finally:
+		db.close()
+
+def insert_manager_league_team_assignment(team_manager):
+	db = conn()
+	print("\ninserting manager / league_team assignment\nmanager id: %s\nteam key: %s" % (team_manager.get_manager_id(), team_manager.team_key))
+	try:
+		with db.cursor() as cursor:
+			sql = "INSERT INTO `manager_league_team_assignment` VALUES (%s, %s)"
+			cursor.execute(sql, (team_manager.get_manager_id(), team_manager.team_key))
+	except Exception as err:
+		print("Failed to insert manager id: %s team key: %s" % (team_manager.get_manager_id(), team_manager.team_key))
 	finally:
 		db.close()

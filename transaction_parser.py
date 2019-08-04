@@ -301,14 +301,15 @@ def get_league_details_and_managers(year):
     league_key = league['league_key']
     league_id = league['league_id']
     league_name = league['name']
-    start_week = league['start_week']
+    start_week = int(league['start_week'])
     start_date = league['start_date']
-    end_week = league['end_week']
+    end_week = int(league['end_week'])
     end_date = league['end_date']
     league_year = league['season']
 
-    the_league_details = league_details(league_key, league_id, league_name, start_week, start_date, end_week, end_date, league_year)
+    the_league_details = league_details(league_key, league_id, league_name, start_week, start_date, end_week, end_date, league_year, team_count)
     the_league_details.printME()
+    db.insert_league_details(the_league_details)
 
     #print league teams details
     all_managers = list()
@@ -317,9 +318,8 @@ def get_league_details_and_managers(year):
 
         team_key = teams[str(i)]['team'][0][0]['team_key']
         team_name = teams[str(i)]['team'][0][2]['name']
-        number_of_moves = teams[str(i)]['team'][0][9]['number_of_moves']
-        number_of_trades = teams[str(i)]['team'][0][10]['number_of_trades']
-        manager_id = teams[str(i)]['team'][0][19]['managers'][0]['manager']['manager_id']
+        number_of_moves = int(teams[str(i)]['team'][0][9]['number_of_moves'])
+        number_of_trades = int(teams[str(i)]['team'][0][10]['number_of_trades'])
         nickname = teams[str(i)]['team'][0][19]['managers'][0]['manager']['nickname']
         try:
             guid = teams[str(i)]['team'][0][19]['managers'][0]['manager']['guid']
@@ -330,15 +330,19 @@ def get_league_details_and_managers(year):
         except:
             email = 'NONE'
 
-        a_league_manager = team_manager(team_key, team_name, number_of_moves, number_of_trades, manager_id, nickname, guid, email)
+        a_league_manager = team_manager(team_key, team_name, number_of_moves, number_of_trades, nickname, guid, email)
         a_league_manager.printME()
         all_managers.append(a_league_manager)
+        db.insert_team_manager(a_league_manager)
 
     return (the_league_details, all_managers)
 
 def do_league_manager_recon():
     for year in constants.LEAGUE_LOOKUP.keys():
-        get_league_details_and_managers(year)
+        ldm = get_league_details_and_managers(year)
+        for tm in ldm[1]:
+            db.insert_manager_league_team_assignment(tm)
+
 
 
 do_league_manager_recon()
