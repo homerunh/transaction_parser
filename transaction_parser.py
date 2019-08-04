@@ -7,8 +7,11 @@ import csv
 
 from models.nfl_player import nfl_player
 from models.transaction import transaction
+from models.team_manager import team_manager
+from models.league_details import league_details
 import db
 import api
+import constants
 
 #db.testing_testing_123("select `id` from manager")
 
@@ -286,3 +289,56 @@ def spin_up_new():
     sync_transactions('2018')
     sync_rosters()
 
+def get_league_details_and_managers(year):
+    data = api.get_league_teams(year).json()
+    
+    league_url = data['fantasy_content']['yahoo:uri']
+    league = data['fantasy_content']['league'][0]
+    teams = data['fantasy_content']['league'][1]['teams']
+    team_count = teams['count']
+
+    #print_league_details()
+    league_key = league['league_key']
+    league_id = league['league_id']
+    league_name = league['name']
+    start_week = league['start_week']
+    start_date = league['start_date']
+    end_week = league['end_week']
+    end_date = league['end_date']
+    league_year = league['season']
+
+    the_league_details = league_details(league_key, league_id, league_name, start_week, start_date, end_week, end_date, league_year)
+    the_league_details.printME()
+
+    #print league teams details
+    all_managers = list()
+    for i in range(0, team_count):
+        team_details = teams[str(i)]['team']
+
+        team_key = teams[str(i)]['team'][0][0]['team_key']
+        team_name = teams[str(i)]['team'][0][2]['name']
+        number_of_moves = teams[str(i)]['team'][0][9]['number_of_moves']
+        number_of_trades = teams[str(i)]['team'][0][10]['number_of_trades']
+        manager_id = teams[str(i)]['team'][0][19]['managers'][0]['manager']['manager_id']
+        nickname = teams[str(i)]['team'][0][19]['managers'][0]['manager']['nickname']
+        try:
+            guid = teams[str(i)]['team'][0][19]['managers'][0]['manager']['guid']
+        except:
+            guid = 'NONE'
+        try:
+            email = teams[str(i)]['team'][0][19]['managers'][0]['manager']['email']
+        except:
+            email = 'NONE'
+
+        a_league_manager = team_manager(team_key, team_name, number_of_moves, number_of_trades, manager_id, nickname, guid, email)
+        a_league_manager.printME()
+        all_managers.append(a_league_manager)
+
+    return (the_league_details, all_managers)
+
+def do_league_manager_recon():
+    for year in constants.LEAGUE_LOOKUP.keys():
+        get_league_details_and_managers(year)
+
+
+do_league_manager_recon()

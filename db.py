@@ -2,14 +2,15 @@ import pymysql
 
 from models.nfl_player import nfl_player
 from models.transaction import transaction
-import creds.db_creds
+import creds
 
 
 def conn():
-	return pymysql.connect(host=creds.db_creds.HOST, \
-	    user=creds.db_creds.USER, \
-	    password=creds.db_creds.PASSWORD, \
-	    db=creds.db_creds.DB,\
+	return pymysql.connect(host=creds.db_creds['HOST'], \
+			port=creds.db_creds['PORT'], \
+	    user=creds.db_creds['USER'], \
+	    password=creds.db_creds['PASSWORD'], \
+	    db=creds.db_creds['DB'],\
 	    charset='utf8mb4',\
 	    autocommit=True,\
 	    cursorclass=pymysql.cursors.DictCursor)

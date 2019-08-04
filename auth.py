@@ -16,15 +16,15 @@ import requests
 import pickle
 from pathlib import Path
 
-import creds.api_creds
+import creds
 
 def request_token(code):
 
 	now = int(time.time())
 
 	url = "https://api.login.yahoo.com/oauth2/get_token"
-	client_id=creds.api_creds.CLIENT_ID
-	client_secret=creds.api_creds.CLIENT_SECRET
+	client_id=creds.api_creds['CLIENT_ID']
+	client_secret=creds.api_creds['CLIENT_SECRET']
 	redirect_uri="oob"
 	grant_type="authorization_code"
 	auth_code=code

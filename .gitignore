@@ -1,5 +1,7 @@
 *.json
 *.csv
 *.xls*
+*.txt
 *_creds*
+creds.py
 __pycache__/

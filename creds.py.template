@@ -1,0 +1,12 @@
+api_creds = {
+  'CLIENT_ID' : '<client_id here>',
+  'CLIENT_SECRET' : '<client_secret here>'
+}
+
+db_creds = {
+  'HOST' : '<db host here>',
+  'PORT' : '<port here>'
+  'USER' : '<db user here>',
+  'PASSWORD' : '<db password here>',
+  'DB' : '<db to use here>'
+}
