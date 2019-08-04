@@ -111,12 +111,12 @@ class team_manager(object):
       return 29   
     # 30 - Keith
     elif self.guid == 'KMMUMMTHTXLA2BIU4O4IOE3QMY':
-      return 29   
+      return 30
     # 31 - Cavin Keys
     elif self.guid == 'RNTYM2XSPKCNRIM6JU2A456DEY':
-      return 29   
+      return 31
     # 32 - Tucker
     elif self.guid == 'WNDV4I25AHS4ODKTSGJVMN2XWE':
-      return 29                              
+      return 32
     else:
       return -1
