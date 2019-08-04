@@ -60,6 +60,7 @@ create table league_details (
 );
 
 create table team_manager (
+	`league_key` varchar(128) NOT NULL,
 	`team_key` varchar(128) NOT NULL,
     `team_name` varchar(128) NOT NULL,
     `number_of_moves` bigint(11) default 0,
@@ -67,7 +68,8 @@ create table team_manager (
     `nickname` varchar(128),
     `guid` varchar(128) NOT NULL,
     `email` varchar(128) NOT NULL,
-    PRIMARY KEY (`team_key`)
+    PRIMARY KEY (`team_key`),
+    FOREIGN KEY(league_key) REFERENCES league_details(league_key)
 );
 
 create table manager_league_team_assignment(
@@ -76,47 +78,59 @@ create table manager_league_team_assignment(
 	PRIMARY KEY (`team_key`),
 	FOREIGN KEY(manager_id) REFERENCES manager(id),
     FOREIGN KEY(team_key) REFERENCES team_manager(team_key)
-		on delete cascade
-        on update cascade
 );
 
 
-drop table `manager_league_team_assignment`;
-insert into `manager_league_team_assignment` VALUES
-	( 9, "359.l.302857.t.1"),
-	( 1, "359.l.302857.t.2"),
-	( 6, "359.l.302857.t.3"),
-	( 3, "359.l.302857.t.4"),
-	( 7, "359.l.302857.t.5"),
-	( 5, "359.l.302857.t.6"),
-	( 2, "359.l.302857.t.7"),
-	( 8, "359.l.302857.t.8"),
-	( 4, "359.l.302857.t.9"),
-	( 10, "359.l.302857.t.10"),
-	( 9, "371.l.15908.t.1"),
-	( 5, "371.l.15908.t.2"),
-	( 8, "371.l.15908.t.3"),
-	( 6, "371.l.15908.t.4"),
-	( 7, "371.l.15908.t.5"),
-	( 4, "371.l.15908.t.6"),
-	( 1, "371.l.15908.t.7"),
-	( 10, "371.l.15908.t.8"),
-	( 2, "371.l.15908.t.9"),
-	( 3, "371.l.15908.t.10"),
-	( 9, "380.l.11074.t.1"),
-	( 5, "380.l.11074.t.2"),
-	( 7, "380.l.11074.t.3"),
-	( 6, "380.l.11074.t.4"),
-	( 8, "380.l.11074.t.5"),
-	( 10, "380.l.11074.t.6"),
-	( 2, "380.l.11074.t.7"),
-	( 1, "380.l.11074.t.8"),
-	( 4, "380.l.11074.t.9"),
-	( 3, "380.l.11074.t.10")
-;
+-- drop table `manager_league_team_assignment`;
+-- insert into `manager_league_team_assignment` VALUES
+-- 	( 9, "359.l.302857.t.1"),
+-- 	( 1, "359.l.302857.t.2"),
+-- 	( 6, "359.l.302857.t.3"),
+-- 	( 3, "359.l.302857.t.4"),
+-- 	( 7, "359.l.302857.t.5"),
+-- 	( 5, "359.l.302857.t.6"),
+-- 	( 2, "359.l.302857.t.7"),
+-- 	( 8, "359.l.302857.t.8"),
+-- 	( 4, "359.l.302857.t.9"),
+-- 	( 10, "359.l.302857.t.10"),
+-- 	( 9, "371.l.15908.t.1"),
+-- 	( 5, "371.l.15908.t.2"),
+-- 	( 8, "371.l.15908.t.3"),
+-- 	( 6, "371.l.15908.t.4"),
+-- 	( 7, "371.l.15908.t.5"),
+-- 	( 4, "371.l.15908.t.6"),
+-- 	( 1, "371.l.15908.t.7"),
+-- 	( 10, "371.l.15908.t.8"),
+-- 	( 2, "371.l.15908.t.9"),
+-- 	( 3, "371.l.15908.t.10"),
+-- 	( 9, "380.l.11074.t.1"),
+-- 	( 5, "380.l.11074.t.2"),
+-- 	( 7, "380.l.11074.t.3"),
+-- 	( 6, "380.l.11074.t.4"),
+-- 	( 8, "380.l.11074.t.5"),
+-- 	( 10, "380.l.11074.t.6"),
+-- 	( 2, "380.l.11074.t.7"),
+-- 	( 1, "380.l.11074.t.8"),
+-- 	( 4, "380.l.11074.t.9"),
+-- 	( 3, "380.l.11074.t.10")
+-- ;
 
-select manager_id, count(*) from `manager_league_team_assignment` group by manager_id;
-
+-- select manager_id, count(*) from `manager_league_team_assignment` group by manager_id;
+truncate league_week_matchup;
+create table league_week_matchup(
+  week bigint(11), 
+  week_start DATE NOT NULL,
+  status varchar(128),
+  is_playoffs TINYINT(1),
+  is_consolation TINYINT(1),
+  is_matchup_recap_available TINYINT(1),
+  is_tied TINYINT(1),
+  winner_team_key varchar(128),
+  team_key_1 varchar(128) NOT NULL,
+  team_1_points DECIMAL(9,2) default '0.00',
+  team_key_2 varchar(128) NOT NULL,
+  team_2_points DECIMAL(9,2) default '0.00'
+);
 
 create table player(
 	`player_key` varchar(128) NOT NULL,

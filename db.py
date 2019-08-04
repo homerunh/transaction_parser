@@ -4,6 +4,7 @@ from models.nfl_player import nfl_player
 from models.transaction import transaction
 from models.team_manager import team_manager
 from models.league_details import league_details
+from models.league_week_matchup import league_week_matchup
 import creds
 
 
@@ -76,8 +77,9 @@ def insert_team_manager(team_manager):
 	team_manager.printME()
 	try:
 		with db.cursor() as cursor:
-			sql = "INSERT INTO `team_manager` VALUES (%s, %s, %s, %s, %s, %s, %s)"
-			cursor.execute(sql, (team_manager.team_key, \
+			sql = "INSERT INTO `team_manager` VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+			cursor.execute(sql, (team_manager.league_key, \
+			 team_manager.team_key, \
 			 team_manager.team_name, \
 			 team_manager.number_of_moves, \
 			 team_manager.number_of_trades, \
@@ -119,5 +121,53 @@ def insert_manager_league_team_assignment(team_manager):
 			cursor.execute(sql, (team_manager.get_manager_id(), team_manager.team_key))
 	except Exception as err:
 		print("Failed to insert manager id: %s team key: %s" % (team_manager.get_manager_id(), team_manager.team_key))
+	finally:
+		db.close()
+
+def insert_league_week_matchup(league_week_matchup):
+	db = conn()
+	print("\ninstering into league week matchup for week %s" % league_week_matchup.week)
+	try:
+		with db.cursor() as cursor:
+			sql = "INSERT INTO `league_week_matchup` VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+			cursor.execute(sql, (league_week_matchup.week, \
+				league_week_matchup.week_start, \
+				league_week_matchup.status, \
+				league_week_matchup.is_playoffs, \
+				league_week_matchup.is_consolation, \
+				league_week_matchup.is_matchup_recap_available, \
+				league_week_matchup.is_tied, \
+				league_week_matchup.winner_team_key, \
+				league_week_matchup.team_key_1, \
+				league_week_matchup.team_1_points, \
+				league_week_matchup.team_key_2, \
+				league_week_matchup.team_2_points))
+	except Exception as err:
+		print("Failed to insert league week matchup for week %s: %s" % (league_week_matchup.week, err))
+	finally:
+		db.close()
+
+def get_league_details():
+	details = list()
+
+	db = conn()
+	try:
+		with db.cursor() as cursor:
+			cursor.execute("SELECT * FROM `league_details`")
+			result = cursor.fetchall()
+			for row in result:
+				details.append(league_details(row['league_key'], \
+								row['league_id'], \
+								row['league_name'], \
+								row['start_week'], \
+								row['start_date'], \
+								row['end_week'], \
+								row['end_date'], \
+								row['league_year'], \
+								row['team_count']))
+
+			return details
+	except Exception as err:
+		print("failed to fetch league details: %s" % err)
 	finally:
 		db.close()

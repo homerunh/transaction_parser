@@ -9,6 +9,7 @@ from models.nfl_player import nfl_player
 from models.transaction import transaction
 from models.team_manager import team_manager
 from models.league_details import league_details
+from models.league_week_matchup import league_week_matchup
 import db
 import api
 import constants
@@ -330,7 +331,7 @@ def get_league_details_and_managers(year):
         except:
             email = 'NONE'
 
-        a_league_manager = team_manager(team_key, team_name, number_of_moves, number_of_trades, nickname, guid, email)
+        a_league_manager = team_manager(league_key, team_key, team_name, number_of_moves, number_of_trades, nickname, guid, email)
         a_league_manager.printME()
         all_managers.append(a_league_manager)
         db.insert_team_manager(a_league_manager)
@@ -343,6 +344,63 @@ def do_league_manager_recon():
         for tm in ldm[1]:
             db.insert_manager_league_team_assignment(tm)
 
+def get_scoreboard_for_league_week(year, week_number):
+    data = api.get_league_scoreboard_for_week(year, week_number).json()
+    matchups = data['fantasy_content']['league'][1]['scoreboard']['0']['matchups']
+    matchup_count = matchups['count']
+
+    for i in range(0, matchup_count):
+        matchup = matchups[str(i)]['matchup']
+        week = matchup['week']
+        week_start = matchup['week_start']
+        status = matchup['status']
+        is_playoffs = matchup['is_playoffs']
+        is_consolation = matchup['is_consolation']
+        is_matchup_recap_available = matchup['is_matchup_recap_available']
+        is_tied = matchup['is_tied']
+        if not is_tied:
+            winner_team_key = matchup['winner_team_key']
+        else:
+            winner_team_key = 'NONE'
+
+        teams = matchups[str(i)]['matchup']['0']['teams']
+        team_count = teams['count']
+
+        if team_count == 2:
+            team_key_1 = teams['0']['team'][0][0]['team_key']
+            team_1_points = teams['0']['team'][1]['team_points']['total']
+            team_key_2 = teams['1']['team'][0][0]['team_key']
+            team_2_points = teams['1']['team'][1]['team_points']['total']
+            
+
+        elif team_count == 1:
+            team_key_1 = teams['0']['team'][0][0]['team_key']
+            team_1_points = teams['0']['team'][1]['team_points']['total']
+            team_key_2 = 'NONE'
+            team_2_points = 0.0
+
+        m = league_week_matchup(int(week), \
+            week_start, \
+            status, \
+            int(is_playoffs), \
+            int(is_consolation), \
+            int(is_matchup_recap_available), \
+            int(is_tied), \
+            winner_team_key, \
+            team_key_1, \
+            float(team_1_points), \
+            team_key_2, \
+            float(team_2_points))
+        m.printME()
+
+        db.insert_league_week_matchup(m)
+
+def do_matchup_recon():
+    leagues = db.get_league_details()
+    for i in range(0, len(leagues)):
+        for w in range(leagues[i].start_week, leagues[i].end_week +1):
+            get_scoreboard_for_league_week(str(leagues[i].league_year), w)
 
 
-do_league_manager_recon()
+# do_league_manager_recon()
+# do_matchup_recon()

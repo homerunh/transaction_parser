@@ -1,4 +1,5 @@
 class team_manager(object):
+  league_key = ''
   team_key = ''
   team_name = ''
   number_of_moves = 0
@@ -7,7 +8,8 @@ class team_manager(object):
   guid = ''
   email = ''
 
-  def __init__(self, team_key, team_name, number_of_moves, number_of_trades, nickname, guid, email):
+  def __init__(self, league_key, team_key, team_name, number_of_moves, number_of_trades, nickname, guid, email):
+    self.league_key = league_key
     self.team_key = team_key
     self.team_name = team_name
     self.number_of_moves = number_of_moves
@@ -17,8 +19,8 @@ class team_manager(object):
     self.email = email
 
   def printME(self):
-    print("team_key: %s\nteam_name: %s\nnumber_of_moves: %d\nnumber_of_trades: %d\nnickname: %s\nguid: %s\nemail: %s\n" % \
-      (self.team_key, self.team_name, self.number_of_moves, self.number_of_trades, self.nickname, self.guid, self.email))
+    print("league_key: %s\nteam_key: %s\nteam_name: %s\nnumber_of_moves: %d\nnumber_of_trades: %d\nnickname: %s\nguid: %s\nemail: %s\n" % \
+      (self.league_key, self.team_key, self.team_name, self.number_of_moves, self.number_of_trades, self.nickname, self.guid, self.email))
 
   def get_manager_id(self):
     
