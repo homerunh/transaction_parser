@@ -405,8 +405,70 @@ def do_matchup_recon():
         for w in range(leagues[i].start_week, leagues[i].end_week +1):
             get_scoreboard_for_league_week(str(leagues[i].league_year), w)
 
+def update_league_standings(year):
+    data = api.get_league_standings(year).json()
+
+    league_year = league = int(data['fantasy_content']['league'][0]['season'])
+    league_key = league = data['fantasy_content']['league'][0]['league_key']
+
+    teams = data['fantasy_content']['league'][1]['standings'][0]['teams']
+    team_count = teams['count']
+
+    for i in range(0, team_count):
+        team_key = teams[str(i)]['team'][0][0]['team_key']
+        standings_data = teams[str(i)]['team'][2]['team_standings']
+
+        final_rank = standings_data['rank']
+        regular_season_wins = int(standings_data['outcome_totals']['wins'])
+        regular_season_losses = int(standings_data['outcome_totals']['losses'])
+        regular_season_ties = int(standings_data['outcome_totals']['ties'])
+        points_for = standings_data['points_for']
+        points_against = standings_data['points_against']
+
+        # if playoff league
+        if 'playoff_seed' in standings_data.keys():
+            # regular season finish
+            playoff_seed = int(standings_data['playoff_seed'])
+            try:
+                is_clinched_playoffs = teams[str(i)]['team'][0][12]['clinched_playoffs'] == 1
+            except:
+                is_clinched_playoffs = False
+        else:
+            playoff_seed = 0
+            is_clinched_playoffs = False
+
+        #if divisions
+        if 'divisional_outcome_totals' in standings_data.keys():
+            division_wins = int(standings_data['divisional_outcome_totals']['wins'])
+            division_losses = int(standings_data['divisional_outcome_totals']['losses'])
+            division_ties = int(standings_data['divisional_outcome_totals']['ties'])
+        else:
+            division_wins = 0
+            division_losses = 0
+            division_ties = 0
+
+        print('Team key: %s\nfinal_rank: %s\nregular_season_wins: %s\nregular_season_losses: %s\nregular_season_ties: %s\npoints_for: %s\npoints_against: %s\nplayoff_seed: %s\nis_clinched_playoffs: %s\ndivision_wins: %s\ndivision_losses: %s\ndivision_ties: %s\n\n' % (
+            team_key,\
+            final_rank, \
+            regular_season_wins, \
+            regular_season_losses, \
+            regular_season_ties, \
+            points_for, \
+            points_against, \
+            playoff_seed, \
+            is_clinched_playoffs, \
+            division_wins, \
+            division_losses, \
+            division_ties))
+
+        
+
+
+
 
 # do_league_manager_recon()
 # do_matchup_recon()
 
-get_scoreboard_for_league_week('2018', 16)
+# get_scoreboard_for_league_week('2018', 16)
+
+update_league_standings('2018')

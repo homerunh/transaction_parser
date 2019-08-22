@@ -38,7 +38,13 @@ def insert_player(player):
 	try:
 		with db.cursor() as cursor:
 			sql = "INSERT IGNORE INTO `player` VALUES (%s, %s, %s, %s, %s, %s, %s)"
-			cursor.execute(sql, (player.player_key, player.player_id, player.first_name, player.last_name, player.full_name, player.nfl_team, player.position))
+			cursor.execute(sql, (player.player_key, \
+				player.player_id, \
+				player.first_name, \
+				player.last_name, \
+				player.full_name, \
+				player.nfl_team, \
+				player.position))
 
 	except Exception as err:
 		print("Failed to insert player: %s" % err)
@@ -53,7 +59,12 @@ def insert_transaction(transaction):
 	try:
 		with db.cursor() as cursor:
 			sql = "INSERT IGNORE INTO `transaction_audit` VALUES (%s, %s, %s, %s, %s, %s)"
-			cursor.execute(sql, (int(transaction.year), transaction.transaction_key, transaction.player_id, transaction.team_key, transaction.transaction_type, transaction.timestamp))
+			cursor.execute(sql, (int(transaction.year), \
+				transaction.transaction_key, \
+				transaction.player_id, \
+				transaction.team_key, \
+				transaction.transaction_type, \
+				transaction.timestamp))
 	except Exception as err:
 		print("Failed to insert transaction: %s" % err)
 	finally:

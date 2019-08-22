@@ -122,3 +122,19 @@ def get_league_scoreboard_for_week(year, week_number):
 	response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
 
 	return response
+
+def get_league_standings(year):
+	url = urlify([constants.API_BASE_URL, "league", constants.LEAGUE_LOOKUP[year], "standings"])
+
+	querystring = {"format":"json"}
+
+	payload = ""
+	headers = {
+	    'Authorization': "bearer " + auth.get_bearer_token(),
+	    'cache-control': "no-cache",
+	    'Postman-Token': "9ca3433a-736d-4524-9f6d-4c17e498f96c"
+	    }
+
+	response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+
+	return response
