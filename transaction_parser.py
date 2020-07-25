@@ -1,4 +1,4 @@
-#!/cygdrive/d/cygwin64/bin/python3
+#!/usr/bin/python3
 
 import pymysql
 import datetime
@@ -33,7 +33,14 @@ def sync_transactions(year):
         transaction_details = data['fantasy_content']['league'][1]['transactions'][str(i)]['transaction'][0]
         transaction_type = transaction_details['type']
         transaction_key = transaction_details['transaction_key']
-        timestamp = datetime.datetime.fromtimestamp(int(transaction_details['timestamp']))
+        #weird timestamp fix
+        if isinstance(transaction_details['timestamp'], int):
+            timestamp = datetime.datetime.fromtimestamp(int(transaction_details['timestamp']))
+        else:
+            try:
+                timestamp = datetime.datetime.fromtimestamp(int(datetime.datetime.strptime(transaction_details['timestamp'], '%Y-%m-%dT%H:%M:%S').timestamp() ))
+            except:
+                timestamp = datetime.datetime.fromtimestamp(int(transaction_details['timestamp']))
 
         if (transaction_type == 'commish'):
             players = []
@@ -469,6 +476,27 @@ def update_league_standings(year):
 # do_league_manager_recon()
 # do_matchup_recon()
 
+
+# sync_transactions('2002')
+# sync_transactions('2003')
+sync_transactions('2004')
+sync_transactions('2005')
+sync_transactions('2006')
+sync_transactions('2007')
+sync_transactions('2008')
+sync_transactions('2009')
+sync_transactions('2010')
+sync_transactions('2011')
+sync_transactions('2012')
+sync_transactions('2013')
+sync_transactions('2014')
+sync_transactions('2015')
+sync_transactions('2016')
+sync_transactions('2017')
+sync_transactions('2018')
+sync_transactions('2019')
+
+
 # get_scoreboard_for_league_week('2018', 16)
 
-update_league_standings('2018')
+# update_league_standings('2018')
