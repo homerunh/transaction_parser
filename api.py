@@ -1,4 +1,5 @@
 import requests
+import json
 
 import auth
 import constants
@@ -136,5 +137,20 @@ def get_league_standings(year):
 	    }
 
 	response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+
+	return response
+
+def post_to_slack(message):
+	url = 'https://hooks.slack.com/services/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'
+
+	headers= {
+		'Content-Type': 'application/json'
+	}
+
+	payload = {
+		'text': message
+	}
+
+	response = requests.request("POST", url, data=json.dumps(payload), headers=headers)
 
 	return response

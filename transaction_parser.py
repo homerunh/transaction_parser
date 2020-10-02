@@ -274,16 +274,18 @@ def sync_current_roster(team_key):
         db.insert_player_current_roster(p, team_key)
 
 def sync_rosters():
-    teams = ['380.l.11074.t.1',\
-    '380.l.11074.t.2',\
-    '380.l.11074.t.3',\
-    '380.l.11074.t.4',\
-    '380.l.11074.t.5',\
-    '380.l.11074.t.6',\
-    '380.l.11074.t.7',\
-    '380.l.11074.t.8',\
-    '380.l.11074.t.9',\
-    '380.l.11074.t.10']
+    teams = ['399.l.123949.t.1',\
+    '399.l.123949.t.2',\
+    '399.l.123949.t.3',\
+    '399.l.123949.t.4',\
+    '399.l.123949.t.5',\
+    '399.l.123949.t.6',\
+    '399.l.123949.t.7',\
+    '399.l.123949.t.8',\
+    '399.l.123949.t.9',\
+    '399.l.123949.t.10',\
+    '399.l.123949.t.11',\
+    '399.l.123949.t.12']
 
     for team in teams:
         sync_current_roster(team)
@@ -366,7 +368,10 @@ def get_scoreboard_for_league_week(year, week_number):
         is_playoffs = matchup['is_playoffs']
         is_consolation = matchup['is_consolation']
         is_matchup_recap_available = matchup['is_matchup_recap_available']
-        is_tied = matchup['is_tied']
+        try:
+            is_tied = matchup['is_tied']
+        except:
+            is_tied=0
         if not is_tied:
             winner_team_key = matchup['winner_team_key']
         else:
@@ -479,24 +484,29 @@ def update_league_standings(year):
 
 # sync_transactions('2002')
 # sync_transactions('2003')
-sync_transactions('2004')
-sync_transactions('2005')
-sync_transactions('2006')
-sync_transactions('2007')
-sync_transactions('2008')
-sync_transactions('2009')
-sync_transactions('2010')
-sync_transactions('2011')
-sync_transactions('2012')
-sync_transactions('2013')
-sync_transactions('2014')
-sync_transactions('2015')
-sync_transactions('2016')
-sync_transactions('2017')
-sync_transactions('2018')
-sync_transactions('2019')
+# sync_transactions('2004')
+# sync_transactions('2005')
+# sync_transactions('2006')
+# sync_transactions('2007')
+# sync_transactions('2008')
+# sync_transactions('2009')
+# sync_transactions('2010')
+# sync_transactions('2011')
+# sync_transactions('2012')
+# sync_transactions('2013')
+# sync_transactions('2014')
+# sync_transactions('2015')
+# sync_transactions('2016')
+# sync_transactions('2017')
+# sync_transactions('2018')
+# sync_transactions('2019')
 
 
 # get_scoreboard_for_league_week('2018', 16)
 
 # update_league_standings('2018')
+
+sync_rosters()
+
+
+
