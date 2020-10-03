@@ -15,6 +15,8 @@ import time
 import requests
 import pickle
 from pathlib import Path
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
 import creds
 
@@ -57,3 +59,15 @@ def get_bearer_token():
 	else:
 		code = input("Input an access code: ")
 		return request_token(code).json()['access_token']
+
+def get_auth_code():
+	options = Options()
+	options.headless=True
+	driver = webdriver.Firefox(options=options)
+	driver.get('url here')
+	button = driver.find_element_by_id('oauth2-agree')
+	button.click()
+	code = driver.find_elements_by_xpath('/html/body/div[2]/div[2]/div[1]/div/div/div[1]/code')
+	driver.close()
+	return code[0].text
+

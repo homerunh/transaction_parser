@@ -140,8 +140,7 @@ def get_league_standings(year):
 
 	return response
 
-def post_to_slack(message):
-	url = 'https://hooks.slack.com/services/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'
+def post_to_slack(message, webhook_url):
 
 	headers= {
 		'Content-Type': 'application/json'
@@ -151,6 +150,6 @@ def post_to_slack(message):
 		'text': message
 	}
 
-	response = requests.request("POST", url, data=json.dumps(payload), headers=headers)
+	response = requests.request("POST", webhook_url, data=json.dumps(payload), headers=headers)
 
 	return response

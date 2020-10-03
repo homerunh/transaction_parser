@@ -13,6 +13,7 @@ from models.league_week_matchup import league_week_matchup
 import db
 import api
 import constants
+import creds
 
 #db.testing_testing_123("select `id` from manager")
 
@@ -274,6 +275,7 @@ def sync_current_roster(team_key):
         db.insert_player_current_roster(p, team_key)
 
 def sync_rosters():
+    db.truncate_current_rosters()
     teams = ['399.l.123949.t.1',\
     '399.l.123949.t.2',\
     '399.l.123949.t.3',\
@@ -473,7 +475,38 @@ def update_league_standings(year):
             division_losses, \
             division_ties))
 
-        
+def enforce_roster_rules():
+    sync_rosters()
+    roster_count, qb_count = db.get_current_rosters()
+
+    message_list = list()
+    message_list.append('Scanned at %s\n' % datetime.datetime.now())
+
+    message_list.append('*Roster Counts:*')
+    for i in range(0, len(roster_count)):
+        the_message = "%s: %d   " % (roster_count[i]['name'], roster_count[i]['roster_count'])
+        if (roster_count[i]['roster_count'] <= 15):
+            the_message = the_message + ':heavy_check_mark:'
+        else:
+            the_message = the_message + ':alert:'
+        message_list.append(the_message)
+
+    message_list.append('\n')
+    message_list.append('*QB Counts:*')
+    for j in range(0, len(qb_count)):
+        the_message = "%s: %d   " % (qb_count[j]['name'], qb_count[j]['qb_count'])
+        if (qb_count[j]['qb_count'] <= 2):
+            the_message = the_message + ':heavy_check_mark:'
+        else:
+            the_message = the_message + ':alert:'
+        message_list.append(the_message)
+
+    # api.post_to_slack('\n'.join(message_list), creds.webhooks['ryan'])
+    api.post_to_slack('\n'.join(message_list), creds.webhooks['mark'])
+
+
+
+
 
 
 
@@ -506,7 +539,9 @@ def update_league_standings(year):
 
 # update_league_standings('2018')
 
-sync_rosters()
+# sync_rosters()
+
+enforce_roster_rules()
 
 
 

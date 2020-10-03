@@ -192,16 +192,35 @@ def get_league_details():
 		db.close()
 
 def get_current_rosters():
-	sql = 'SELECT m.name, p.* FROM dynasty.current_roster cr join player p on p.player_id=cr.player_id join manager_league_team_assignment mlta on mlta.team_key=cr.team_key join manager m on m.id=mlta.manager_id'
 
-	players = list()
+
+
+	roster_count = 'SELECT m.name, count(*) as roster_count FROM dynasty.current_roster cr join player p on p.player_id=cr.player_id join manager_league_team_assignment mlta on mlta.team_key=cr.team_key join manager m on m.id=mlta.manager_id group by m.name'
+	qb_count = 'SELECT m.name, count(*) as qb_count FROM dynasty.current_roster cr  join player p on p.player_id=cr.player_id  join manager_league_team_assignment mlta on mlta.team_key=cr.team_key  join manager m on m.id=mlta.manager_id where p.position=\'QB\' group by m.name'
 
 	db = conn()
 	try:
 		cur = db.cursor()
-		cur.execute(sql)
-		return cur.fetchall()
+		cur.execute(roster_count)
+		x= cur.fetchall()
+
+		cur.execute(qb_count)
+		y = cur.fetchall()
+
+		return x,y
 	except Exception as err:
 		print("failed to fetch current rosters: %s" % err)
+	finally:
+		db.close()
+
+def truncate_current_rosters():
+	db = conn()
+
+	try:
+		cur = db.cursor()
+		cur.execute('truncate current_roster')
+
+	except Exception as err:
+		print('failed to truncate current roster table: %s' % err)
 	finally:
 		db.close()
