@@ -501,8 +501,8 @@ def enforce_roster_rules():
             the_message = the_message + ':alert:'
         message_list.append(the_message)
 
-    # api.post_to_slack('\n'.join(message_list), creds.webhooks['ryan'])
-    api.post_to_slack('\n'.join(message_list), creds.webhooks['mark'])
+    api.post_to_slack('\n'.join(message_list), creds.webhooks['ryan'])
+    # api.post_to_slack('\n'.join(message_list), creds.webhooks['mark'])
 
 
 
@@ -511,8 +511,8 @@ def enforce_roster_rules():
 
 
 
-# do_league_manager_recon()
-# do_matchup_recon()
+do_league_manager_recon()
+do_matchup_recon()
 
 
 # sync_transactions('2002')
@@ -541,7 +541,7 @@ def enforce_roster_rules():
 
 # sync_rosters()
 
-enforce_roster_rules()
+# enforce_roster_rules()
 
 
 

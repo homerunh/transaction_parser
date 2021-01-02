@@ -61,8 +61,7 @@ def get_bearer_token():
 		return request_token(code).json()['access_token']
 
 def get_auth_code():
-	options = Options()
-	options.headless=True
+	
 	driver = webdriver.Firefox(options=options)
 	driver.get('url here')
 	button = driver.find_element_by_id('oauth2-agree')

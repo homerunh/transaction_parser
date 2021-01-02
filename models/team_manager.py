@@ -120,5 +120,8 @@ class team_manager(object):
     # 32 - Tucker
     elif self.guid == 'WNDV4I25AHS4ODKTSGJVMN2XWE':
       return 32
+    # 33 - Gene
+    elif self.guid == 'BXCA7D4HOKMHW5RS3HKEJPDYOM':
+      return 33
     else:
       return -1
