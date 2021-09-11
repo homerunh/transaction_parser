@@ -267,8 +267,15 @@ def sync_current_roster(team_key):
                     position = players[str(i)]['player'][0][j]['display_position']
                     break
 
+        try:
+            covid_status = players[str(i)]['player'][0][3]['status']
+        except:
+            covid_status = 'none'
 
-        p = nfl_player(player_key, player_id, first_name, last_name, full_name, nfl_team, position)        
+        print(f"covid status: {covid_status}")
+
+
+        p = nfl_player(player_key, player_id, first_name, last_name, full_name, nfl_team, position, covid_status)        
         # p.printME()
         # print(team_key)
         db.insert_player(p)
@@ -276,18 +283,34 @@ def sync_current_roster(team_key):
 
 def sync_rosters():
     db.truncate_current_rosters()
-    teams = ['399.l.123949.t.1',\
-    '399.l.123949.t.2',\
-    '399.l.123949.t.3',\
-    '399.l.123949.t.4',\
-    '399.l.123949.t.5',\
-    '399.l.123949.t.6',\
-    '399.l.123949.t.7',\
-    '399.l.123949.t.8',\
-    '399.l.123949.t.9',\
-    '399.l.123949.t.10',\
-    '399.l.123949.t.11',\
-    '399.l.123949.t.12']
+    
+    # These are the 2020 teams
+    #
+    # teams = ['399.l.123949.t.1',\
+    # '399.l.123949.t.2',\
+    # '399.l.123949.t.3',\
+    # '399.l.123949.t.4',\
+    # '399.l.123949.t.5',\
+    # '399.l.123949.t.6',\
+    # '399.l.123949.t.7',\
+    # '399.l.123949.t.8',\
+    # '399.l.123949.t.9',\
+    # '399.l.123949.t.10',\
+    # '399.l.123949.t.11',\
+    # '399.l.123949.t.12']
+
+    teams = ['406.l.115174.t.1',\
+    '406.l.115174.t.2',\
+    '406.l.115174.t.3',\
+    '406.l.115174.t.4',\
+    '406.l.115174.t.5',\
+    '406.l.115174.t.6',\
+    '406.l.115174.t.7',\
+    '406.l.115174.t.8',\
+    '406.l.115174.t.9',\
+    '406.l.115174.t.10',\
+    '406.l.115174.t.11',\
+    '406.l.115174.t.12']
 
     for team in teams:
         sync_current_roster(team)
@@ -477,7 +500,7 @@ def update_league_standings(year):
 
 def enforce_roster_rules():
     sync_rosters()
-    roster_count, qb_count = db.get_current_rosters()
+    roster_count, qb_count, covid_count = db.get_current_rosters()
 
     message_list = list()
     message_list.append('Scanned at %s\n' % datetime.datetime.now())
@@ -492,14 +515,26 @@ def enforce_roster_rules():
         message_list.append(the_message)
 
     message_list.append('\n')
-    message_list.append('*QB Counts:*')
-    for j in range(0, len(qb_count)):
-        the_message = "%s: %d   " % (qb_count[j]['name'], qb_count[j]['qb_count'])
-        if (qb_count[j]['qb_count'] <= 2):
-            the_message = the_message + ':heavy_check_mark:'
-        else:
-            the_message = the_message + ':alert:'
-        message_list.append(the_message)
+    message_list.append('*Covid Counts:*')
+    for i in range(0, len(covid_count)):
+        the_message = "%s: %d   " % (covid_count[i]['name'], covid_count[i]['covid_count'])
+        
+        
+        
+        the_message = the_message + ':coronavirus:'
+        message_list.append(the_message)        
+
+    
+    # message_list.append('*QB Counts:*')
+    # for j in range(0, len(qb_count)):
+    #     the_message = "%s: %d   " % (qb_count[j]['name'], qb_count[j]['qb_count'])
+    #     if (qb_count[j]['qb_count'] <= 2):
+    #         the_message = the_message + ':heavy_check_mark:'
+    #     else:
+    #         the_message = the_message + ':alert:'
+    #     message_list.append(the_message)
+
+
 
     api.post_to_slack('\n'.join(message_list), creds.webhooks['ryan'])
     # api.post_to_slack('\n'.join(message_list), creds.webhooks['mark'])
@@ -511,8 +546,8 @@ def enforce_roster_rules():
 
 
 
-do_league_manager_recon()
-do_matchup_recon()
+# do_league_manager_recon()
+# do_matchup_recon()
 
 
 # sync_transactions('2002')
@@ -541,7 +576,7 @@ do_matchup_recon()
 
 # sync_rosters()
 
-# enforce_roster_rules()
+enforce_roster_rules()
 
 
 

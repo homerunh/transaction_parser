@@ -44,7 +44,8 @@ insert ignore into `manager` VALUES
 (29, "Chris Quarterman", ""),
 (30, "Keith", ""),
 (31, "Cavin Keys", ""),
-(32, "Tucker", "");
+(32, "Tucker", ""),
+(33, "Gene", "");
 
 create table league_details (
 	`league_key` varchar(128) NOT NULL,
@@ -147,6 +148,7 @@ create table player(
 	`full_name` varchar(128) NOT NULL,
 	`nfl_team` varchar(128) NOT NULL,
 	`position` varchar(128) NOT NULL,
+	`covid_status` varchar(128) DEFAULT 'none',
 	PRIMARY KEY(`player_id`)
 );
 
@@ -171,3 +173,4 @@ create table current_roster(
 	FOREIGN KEY(team_key) REFERENCES manager_league_team_assignment(team_key),
 	FOREIGN KEY(player_id) REFERENCES player(player_id)
 );
+

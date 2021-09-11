@@ -37,14 +37,15 @@ def insert_player(player):
 	player.printME()
 	try:
 		with db.cursor() as cursor:
-			sql = "INSERT IGNORE INTO `player` VALUES (%s, %s, %s, %s, %s, %s, %s)"
+			sql = "INSERT IGNORE INTO `player` VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
 			cursor.execute(sql, (player.player_key, \
 				player.player_id, \
 				player.first_name, \
 				player.last_name, \
 				player.full_name, \
 				player.nfl_team, \
-				player.position))
+				player.position, \
+				player.covid_status))
 
 	except Exception as err:
 		print("Failed to insert player: %s" % err)
@@ -61,7 +62,7 @@ def insert_transaction(transaction):
 			sql = "INSERT IGNORE INTO `transaction_audit` VALUES (%s, %s, %s, %s, %s, %s)"
 			cursor.execute(sql, (int(transaction.year), \
 				transaction.transaction_key, \
-				transaction.player_id, \
+				transaction.player_key, \
 				transaction.team_key, \
 				transaction.transaction_type, \
 				transaction.timestamp))
@@ -77,7 +78,7 @@ def insert_player_current_roster(player, team_key):
 	try:
 		with db.cursor() as cursor:
 			sql = "INSERT IGNORE INTO `current_roster` VALUES (%s, %s)"
-			cursor.execute(sql, (team_key, player.player_id))
+			cursor.execute(sql, (team_key, player.player_key))
 	except Exception as err:
 		print("Failed to inster transaction: %s" % err)
 	finally:
@@ -195,8 +196,9 @@ def get_current_rosters():
 
 
 
-	roster_count = 'SELECT m.name, count(*) as roster_count FROM dynasty.current_roster cr join player p on p.player_id=cr.player_id join manager_league_team_assignment mlta on mlta.team_key=cr.team_key join manager m on m.id=mlta.manager_id group by m.name'
-	qb_count = 'SELECT m.name, count(*) as qb_count FROM dynasty.current_roster cr  join player p on p.player_id=cr.player_id  join manager_league_team_assignment mlta on mlta.team_key=cr.team_key  join manager m on m.id=mlta.manager_id where p.position=\'QB\' group by m.name'
+	roster_count = 'SELECT m.name, count(*) as roster_count FROM dynasty.current_roster cr join player p on p.player_key=cr.player_key join manager_league_team_assignment mlta on mlta.team_key=cr.team_key join manager m on m.id=mlta.manager_id group by m.name'
+	qb_count = 'SELECT m.name, count(*) as qb_count FROM dynasty.current_roster cr  join player p on p.player_key=cr.player_key  join manager_league_team_assignment mlta on mlta.team_key=cr.team_key  join manager m on m.id=mlta.manager_id where p.position=\'QB\' group by m.name'
+	covid_count = 'SELECT m.name, count(*) as covid_count FROM dynasty.current_roster cr join player p on p.player_key=cr.player_key join manager_league_team_assignment mlta on mlta.team_key=cr.team_key join manager m on m.id=mlta.manager_id where p.covid_status=\'COVID-19\' group by m.name;'
 
 	db = conn()
 	try:
@@ -207,7 +209,10 @@ def get_current_rosters():
 		cur.execute(qb_count)
 		y = cur.fetchall()
 
-		return x,y
+		cur.execute(covid_count)
+		z = cur.fetchall()
+
+		return x,y,z
 	except Exception as err:
 		print("failed to fetch current rosters: %s" % err)
 	finally:

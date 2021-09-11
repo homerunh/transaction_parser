@@ -1,6 +1,11 @@
 # https://fantasy.espn.com/football/league?leagueId=129817
 # https://fantasy.espn.com/football/tools/reactivate?seasonId=2020
 
+# wrong!! -> /usr/share/obs/libobs
+# cmake -DLIBOBS_INCLUDE_DIR="/home/ryanh/code/obs-studio/libobs" -DLIBOBS_LIB="/usr/lib/libobs.so" -DOBS_FRONTEND_LIB="usr/lib/libobs-frontend-api.so" -DCMAKE_INSTALL_PREFIX=/usr ..
+
+
+
 
 #Dynasty
 # LEAGUE_LOOKUP = {
@@ -27,6 +32,7 @@ LEAGUE_LOOKUP = {
   '2018': "380.l.119485",
   '2019': "390.l.138607",
   '2020': "399.l.123949"
+  # '2021': "406.l.115174"
 }
 
 #Bodos
