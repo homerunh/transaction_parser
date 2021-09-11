@@ -10,6 +10,7 @@ from models.transaction import transaction
 from models.team_manager import team_manager
 from models.league_details import league_details
 from models.league_week_matchup import league_week_matchup
+from models.league_standing import league_standing
 import db
 import api
 import constants
@@ -484,19 +485,28 @@ def update_league_standings(year):
             division_losses = 0
             division_ties = 0
 
-        print('Team key: %s\nfinal_rank: %s\nregular_season_wins: %s\nregular_season_losses: %s\nregular_season_ties: %s\npoints_for: %s\npoints_against: %s\nplayoff_seed: %s\nis_clinched_playoffs: %s\ndivision_wins: %s\ndivision_losses: %s\ndivision_ties: %s\n\n' % (
-            team_key,\
-            final_rank, \
-            regular_season_wins, \
-            regular_season_losses, \
-            regular_season_ties, \
-            points_for, \
-            points_against, \
-            playoff_seed, \
-            is_clinched_playoffs, \
-            division_wins, \
-            division_losses, \
-            division_ties))
+        standing = league_standing(team_key, year, playoff_seed, final_rank, is_clinched_playoffs, regular_season_wins, regular_season_losses, regular_season_ties, division_wins, division_losses, division_ties, points_for, points_against)
+        standing.printME()
+        db.insert_league_standing(standing)
+        # print('Team key: %s\nfinal_rank: %s\nregular_season_wins: %s\nregular_season_losses: %s\nregular_season_ties: %s\npoints_for: %s\npoints_against: %s\nplayoff_seed: %s\nis_clinched_playoffs: %s\ndivision_wins: %s\ndivision_losses: %s\ndivision_ties: %s\n\n' % (
+        #     team_key,\
+        #     final_rank, \
+        #     regular_season_wins, \
+        #     regular_season_losses, \
+        #     regular_season_ties, \
+        #     points_for, \
+        #     points_against, \
+        #     playoff_seed, \
+        #     is_clinched_playoffs, \
+        #     division_wins, \
+        #     division_losses, \
+        #     division_ties))
+
+
+def do_league_standings_recon():
+    for year in constants.LEAGUE_LOOKUP.keys():
+        update_league_standings(year)
+
 
 def enforce_roster_rules():
     sync_rosters()
@@ -538,6 +548,8 @@ def enforce_roster_rules():
 
     api.post_to_slack('\n'.join(message_list), creds.webhooks['ryan'])
     # api.post_to_slack('\n'.join(message_list), creds.webhooks['mark'])
+    # api.post_to_slack('\n'.join(message_list), creds.webhooks['roster_police'])
+    
 
 
 
@@ -572,11 +584,12 @@ def enforce_roster_rules():
 
 # get_scoreboard_for_league_week('2018', 16)
 
-# update_league_standings('2018')
+# update_league_standings('2020')
+do_league_standings_recon()
 
 # sync_rosters()
 
-enforce_roster_rules()
+# enforce_roster_rules()
 
 
 

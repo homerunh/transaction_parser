@@ -5,6 +5,7 @@ from models.transaction import transaction
 from models.team_manager import team_manager
 from models.league_details import league_details
 from models.league_week_matchup import league_week_matchup
+from models.league_standing import league_standing
 import creds
 import constants
 
@@ -161,6 +162,35 @@ def insert_league_week_matchup(league_week_matchup):
 		print("Failed to insert league week matchup for week %s: %s" % (league_week_matchup.week, err))
 	finally:
 		db.close()
+
+
+
+def insert_league_standing(league_standing):
+	db = conn()
+	print(f"\ninstering into league standing for year {league_standing.league_year}")
+	try:
+		with db.cursor() as cursor:
+			sql = "INSERT IGNORE INTO `league_standings` VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+			cursor.execute(sql, (league_standing.team_key , \
+				league_standing.league_year, \
+				league_standing.playoff_seed, \
+				league_standing.final_rank, \
+				league_standing.is_clinched_playoff, \
+				league_standing.regular_season_wins, \
+				league_standing.regular_season_losses, \
+				league_standing.regular_season_ties, \
+				league_standing.division_wins, \
+				league_standing.division_losses, \
+				league_standing.division_ties, \
+				league_standing.points_for, \
+				league_standing.points_against))
+			
+	except Exception as err:
+		print("Failed to insert league standing for year %s: %s" % (league_standing.league_year, err))
+	finally:
+		db.close()
+
+
 
 def get_league_details():
 	details = list()
