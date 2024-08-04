@@ -94,8 +94,8 @@ def get_team_players(team_key):
 	# print(response.text)
 	return response
 
-def get_league_teams(year):
-	url = urlify([constants.API_BASE_URL, "league", constants.LEAGUE_LOOKUP[year], "teams"])
+def get_league_teams(league_id):
+	url = urlify([constants.API_BASE_URL, "league", league_id, "teams"])
 	querystring = {"format":"json"}
 
 	payload = ""
@@ -109,8 +109,8 @@ def get_league_teams(year):
 
 	return response
 
-def get_league_scoreboard_for_week(year, week_number):
-	url = urlify([constants.API_BASE_URL, "league", constants.LEAGUE_LOOKUP[year], "scoreboard;week="+str(week_number)])
+def get_league_scoreboard_for_week(league_id, week_number):
+	url = urlify([constants.API_BASE_URL, "league", league_id, "scoreboard;week="+str(week_number)])
 	querystring = {"format":"json"}
 
 	payload = ""
@@ -124,8 +124,8 @@ def get_league_scoreboard_for_week(year, week_number):
 
 	return response
 
-def get_league_standings(year):
-	url = urlify([constants.API_BASE_URL, "league", constants.LEAGUE_LOOKUP[year], "standings"])
+def get_league_standings(league_id):
+	url = urlify([constants.API_BASE_URL, "league", league_id, "standings"])
 
 	querystring = {"format":"json"}
 

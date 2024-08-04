@@ -40,7 +40,7 @@ class team_manager(object):
     elif self.guid == 'OIGPHIM47IIYPKRYA24Q63D27M':
       return 5
     # 6 - Sammy Baer
-    elif self.guid == 'XDVZBCNA4GCVYUEXBBAOJVZPGQ' or self.guid == 'EUHTMSCMCT26H7XUH3APCBQF54' or self.guid == 'D4IOIYJDXJDSNDXU64P3EWTMME':
+    elif self.team_key == '273.l.53730.t.6' or self.guid == 'XDVZBCNA4GCVYUEXBBAOJVZPGQ' or self.guid == 'EUHTMSCMCT26H7XUH3APCBQF54' or self.guid == 'D4IOIYJDXJDSNDXU64P3EWTMME':
       return 6
     # 7 - Billy
     elif self.guid == '2S4J2BZQ2RIQAQW6H3UVBAELBM':
@@ -70,7 +70,7 @@ class team_manager(object):
     elif self.guid == 'VF272APNYU27LXKVR3ROPPKATQ':
       return 15
     # 16 - Joel Harrigan
-    elif self.email == 'joelh16@hotmail.com' or self.guid == 'UMAPSPIDD2XND7MBYZYPYLE7OI':
+    elif self.email == 'joelh16@hotmail.com' or self.guid == 'UMAPSPIDD2XND7MBYZYPYLE7OI' or self.team_key == '49.l.122388.t.7':
       return 16
     # 17 - Ben Brunjes 
     elif self.guid == 'GIZJGTHE5ZJMNEAOUOLDGQ2MRE':

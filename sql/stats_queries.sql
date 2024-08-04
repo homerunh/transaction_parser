@@ -75,7 +75,7 @@ SELECT m.name, count(*)
 from league_week_matchup lwm
 join manager_league_team_assignment mlta on mlta.team_key=lwm.winner_team_key
 join manager m on m.id=mlta.manager_id
-where league_key in ('49.l.122388', '79.l.134615', '101.l.390369', '124.l.156676', '153.l.448193', '175.l.352233', '199.l.132731', '222.l.121923', '242.l.73651', '257.l.49695', '273.l.102516', '314.l.23104', '331.l.83583', '348.l.252077', '359.l.96095', '371.l.157703', '380.l.192099', '390.l.134551', '399.l.884628')
+-- where league_key in ('49.l.122388', '79.l.134615', '101.l.390369', '124.l.156676', '153.l.448193', '175.l.352233', '199.l.132731', '222.l.121923', '242.l.73651', '257.l.49695', '273.l.102516', '314.l.23104', '331.l.83583', '348.l.252077', '359.l.96095', '371.l.157703', '380.l.192099', '390.l.134551', '399.l.884628')
 group by m.name;
 
 SELECT  m.name, count(*) 
@@ -96,7 +96,7 @@ FROM (
 	from league_week_matchup lwm
 	join manager_league_team_assignment mlta on mlta.team_key=lwm.winner_team_key
 	join manager m on m.id=mlta.manager_id
-	where league_key in ('49.l.122388', '79.l.134615', '101.l.390369', '124.l.156676', '153.l.448193', '175.l.352233', '199.l.132731', '222.l.121923', '242.l.73651', '257.l.49695', '273.l.102516', '314.l.23104', '331.l.83583', '348.l.252077', '359.l.96095', '371.l.157703', '380.l.192099', '390.l.134551', '399.l.884628')
+	-- where league_key in ('49.l.122388', '79.l.134615', '101.l.390369', '124.l.156676', '153.l.448193', '175.l.352233', '199.l.132731', '222.l.121923', '242.l.73651', '257.l.49695', '273.l.102516', '314.l.23104', '331.l.83583', '348.l.252077', '359.l.96095', '371.l.157703', '380.l.192099', '390.l.134551', '399.l.884628')
 	group by m.name
 ) as A
 join (
@@ -104,7 +104,7 @@ join (
 	from league_week_matchup lwm
 	join manager_league_team_assignment mlta on (mlta.team_key=lwm.team_key_1 or mlta.team_key = lwm.team_key_2) and mlta.team_key <> lwm.winner_team_key
 	join manager m on m.id=mlta.manager_id
-	where league_key in ('49.l.122388', '79.l.134615', '101.l.390369', '124.l.156676', '153.l.448193', '175.l.352233', '199.l.132731', '222.l.121923', '242.l.73651', '257.l.49695', '273.l.102516', '314.l.23104', '331.l.83583', '348.l.252077', '359.l.96095', '371.l.157703', '380.l.192099', '390.l.134551', '399.l.884628')
+	-- where league_key in ('49.l.122388', '79.l.134615', '101.l.390369', '124.l.156676', '153.l.448193', '175.l.352233', '199.l.132731', '222.l.121923', '242.l.73651', '257.l.49695', '273.l.102516', '314.l.23104', '331.l.83583', '348.l.252077', '359.l.96095', '371.l.157703', '380.l.192099', '390.l.134551', '399.l.884628')
 	group by m.name
 ) as B on B.manager_name=A.manager_name
 left join (
@@ -112,7 +112,7 @@ left join (
 	from league_week_matchup lwm
 	join manager_league_team_assignment mlta on (mlta.team_key=lwm.team_key_1 or mlta.team_key = lwm.team_key_2) and is_tied=1
 	join manager m on m.id=mlta.manager_id
-	where league_key in ('49.l.122388', '79.l.134615', '101.l.390369', '124.l.156676', '153.l.448193', '175.l.352233', '199.l.132731', '222.l.121923', '242.l.73651', '257.l.49695', '273.l.102516', '314.l.23104', '331.l.83583', '348.l.252077', '359.l.96095', '371.l.157703', '380.l.192099', '390.l.134551', '399.l.884628')
+	-- where league_key in ('49.l.122388', '79.l.134615', '101.l.390369', '124.l.156676', '153.l.448193', '175.l.352233', '199.l.132731', '222.l.121923', '242.l.73651', '257.l.49695', '273.l.102516', '314.l.23104', '331.l.83583', '348.l.252077', '359.l.96095', '371.l.157703', '380.l.192099', '390.l.134551', '399.l.884628')
 	group by m.name
 )as C on B.manager_name=C.manager_name;
 

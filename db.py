@@ -191,15 +191,14 @@ def insert_league_standing(league_standing):
 		db.close()
 
 
-
-def get_league_details():
+def get_league_details(league_lookup_map):
 	details = list()
 
 	db = conn()
 	try:
 		with db.cursor() as cursor:
 			sql = "SELECT * FROM `league_details` where league_key in (%s)"
-			args = list(constants.LEAGUE_LOOKUP.values())
+			args = list(league_lookup_map.values())
 			in_p = ', '.join(list(map(lambda x: '%s', args)))
 			sql = sql % in_p
 			
@@ -222,9 +221,8 @@ def get_league_details():
 	finally:
 		db.close()
 
+
 def get_current_rosters():
-
-
 
 	roster_count = 'SELECT m.name, count(*) as roster_count FROM dynasty.current_roster cr join player p on p.player_key=cr.player_key join manager_league_team_assignment mlta on mlta.team_key=cr.team_key join manager m on m.id=mlta.manager_id group by m.name'
 	qb_count = 'SELECT m.name, count(*) as qb_count FROM dynasty.current_roster cr  join player p on p.player_key=cr.player_key  join manager_league_team_assignment mlta on mlta.team_key=cr.team_key  join manager m on m.id=mlta.manager_id where p.position=\'QB\' group by m.name'
@@ -248,12 +246,43 @@ def get_current_rosters():
 	finally:
 		db.close()
 
-def truncate_current_rosters():
+# def truncate_current_rosters():
+# 	db = conn()
+
+# 	try:
+# 		cur = db.cursor()
+# 		cur.execute('SET FOREIGN_KEY_CHECKS = 0;')
+# 		cur.execute('truncate current_roster;')
+
+# 	except Exception as err:
+# 		print('failed to truncate current roster table: %s' % err)
+# 	finally:
+# 		db.close()
+
+# def truncate_players():
+# 	db = conn()
+
+# 	try:
+# 		cur = db.cursor()
+# 		cur.execute('truncate player;')
+# 		cur.execute('SET FOREIGN_KEY_CHECKS = 1;')
+
+# 	except Exception as err:
+# 		print('failed to truncate players table: %s' % err)
+# 	finally:
+# 		db.close()
+
+
+def truncate_reset():
 	db = conn()
 
 	try:
 		cur = db.cursor()
-		cur.execute('truncate current_roster')
+		cur.execute('SET FOREIGN_KEY_CHECKS = 0;')
+		cur.execute('truncate transaction_audit;')
+		cur.execute('truncate current_roster;')
+		cur.execute('truncate player;')
+		cur.execute('SET FOREIGN_KEY_CHECKS = 1;')
 
 	except Exception as err:
 		print('failed to truncate current roster table: %s' % err)

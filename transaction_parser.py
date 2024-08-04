@@ -283,7 +283,7 @@ def sync_current_roster(team_key):
         db.insert_player_current_roster(p, team_key)
 
 def sync_rosters():
-    db.truncate_current_rosters()
+    db.truncate_reset()
     
     # These are the 2020 teams
     #
@@ -300,18 +300,33 @@ def sync_rosters():
     # '399.l.123949.t.11',\
     # '399.l.123949.t.12']
 
-    teams = ['406.l.115174.t.1',\
-    '406.l.115174.t.2',\
-    '406.l.115174.t.3',\
-    '406.l.115174.t.4',\
-    '406.l.115174.t.5',\
-    '406.l.115174.t.6',\
-    '406.l.115174.t.7',\
-    '406.l.115174.t.8',\
-    '406.l.115174.t.9',\
-    '406.l.115174.t.10',\
-    '406.l.115174.t.11',\
-    '406.l.115174.t.12']
+    # 2021 teams
+    # teams = ['406.l.115174.t.1',\
+    # '406.l.115174.t.2',\
+    # '406.l.115174.t.3',\
+    # '406.l.115174.t.4',\
+    # '406.l.115174.t.5',\
+    # '406.l.115174.t.6',\
+    # '406.l.115174.t.7',\
+    # '406.l.115174.t.8',\
+    # '406.l.115174.t.9',\
+    # '406.l.115174.t.10',\
+    # '406.l.115174.t.11',\
+    # '406.l.115174.t.12']
+
+    # 2022
+    teams = ['414.l.717209.t.1',\
+    '414.l.717209.t.2',\
+    '414.l.717209.t.3',\
+    '414.l.717209.t.4',\
+    '414.l.717209.t.5',\
+    '414.l.717209.t.6',\
+    '414.l.717209.t.7',\
+    '414.l.717209.t.8',\
+    '414.l.717209.t.9',\
+    '414.l.717209.t.10',\
+    '414.l.717209.t.11',\
+    '414.l.717209.t.12']
 
     for team in teams:
         sync_current_roster(team)
@@ -325,8 +340,8 @@ def spin_up_new():
     sync_transactions('2018')
     sync_rosters()
 
-def get_league_details_and_managers(year):
-    data = api.get_league_teams(year).json()
+def get_league_details_and_managers(league_id):
+    data = api.get_league_teams(league_id).json()
     
     league_url = data['fantasy_content']['yahoo:uri']
     league = data['fantasy_content']['league'][0]
@@ -356,13 +371,16 @@ def get_league_details_and_managers(year):
         team_name = teams[str(i)]['team'][0][2]['name']
         number_of_moves = int(teams[str(i)]['team'][0][9]['number_of_moves'])
         number_of_trades = int(teams[str(i)]['team'][0][10]['number_of_trades'])
-        nickname = teams[str(i)]['team'][0][19]['managers'][0]['manager']['nickname']
         try:
-            guid = teams[str(i)]['team'][0][19]['managers'][0]['manager']['guid']
+            nickname = teams[str(i)]['team'][0][20]['managers'][0]['manager']['nickname']
+        except:
+            nickname = 'NONE'
+        try:
+            guid = teams[str(i)]['team'][0][20]['managers'][0]['manager']['guid']
         except:
             guid = 'NONE'
         try:
-            email = teams[str(i)]['team'][0][19]['managers'][0]['manager']['email']
+            email = teams[str(i)]['team'][0][20]['managers'][0]['manager']['email']
         except:
             email = 'NONE'
 
@@ -379,10 +397,10 @@ def do_league_manager_recon():
         for tm in ldm[1]:
             db.insert_manager_league_team_assignment(tm)
 
-def get_scoreboard_for_league_week(year, week_number):
-    data = api.get_league_scoreboard_for_week(year, week_number).json()
-    league_year = league = int(data['fantasy_content']['league'][0]['season'])
-    league_key = league = data['fantasy_content']['league'][0]['league_key']
+def get_scoreboard_for_league_week(league_id, week_number):
+    data = api.get_league_scoreboard_for_week(league_id, week_number).json()
+    league_year = int(data['fantasy_content']['league'][0]['season'])
+    league_key = data['fantasy_content']['league'][0]['league_key']
     matchups = data['fantasy_content']['league'][1]['scoreboard']['0']['matchups']
     matchup_count = matchups['count']
 
@@ -419,19 +437,19 @@ def get_scoreboard_for_league_week(year, week_number):
             team_key_2 = 'NONE'
             team_2_points = 0.0
 
-        m = league_week_matchup(league_key, \
-            league_year, \
-            int(week), \
-            week_start, \
-            status, \
-            int(is_playoffs), \
-            int(is_consolation), \
-            int(is_matchup_recap_available), \
-            int(is_tied), \
-            winner_team_key, \
-            team_key_1, \
-            float(team_1_points), \
-            team_key_2, \
+        m = league_week_matchup(league_key,
+            league_year,
+            int(week),
+            week_start,
+            status,
+            int(is_playoffs),
+            int(is_consolation),
+            int(is_matchup_recap_available),
+            int(is_tied),
+            winner_team_key,
+            team_key_1,
+            float(team_1_points),
+            team_key_2,
             float(team_2_points))
         m.printME()
 
@@ -443,8 +461,8 @@ def do_matchup_recon():
         for w in range(leagues[i].start_week, leagues[i].end_week +1):
             get_scoreboard_for_league_week(str(leagues[i].league_year), w)
 
-def update_league_standings(year):
-    data = api.get_league_standings(year).json()
+def update_league_standings(year, league_id):
+    data = api.get_league_standings(league_id).json()
 
     league_year = league = int(data['fantasy_content']['league'][0]['season'])
     league_key = league = data['fantasy_content']['league'][0]['league_key']
@@ -524,15 +542,12 @@ def enforce_roster_rules():
             the_message = the_message + ':alert:'
         message_list.append(the_message)
 
-    message_list.append('\n')
-    message_list.append('*Covid Counts:*')
-    for i in range(0, len(covid_count)):
-        the_message = "%s: %d   " % (covid_count[i]['name'], covid_count[i]['covid_count'])
-        
-        
-        
-        the_message = the_message + ':coronavirus:'
-        message_list.append(the_message)        
+    # message_list.append('\n')
+    # message_list.append('*Covid Counts:*')
+    # for i in range(0, len(covid_count)):
+    #     the_message = "%s: %d   " % (covid_count[i]['name'], covid_count[i]['covid_count'])        
+    #     the_message = the_message + ':coronavirus:'
+    #     message_list.append(the_message)        
 
     
     # message_list.append('*QB Counts:*')
@@ -546,50 +561,79 @@ def enforce_roster_rules():
 
 
 
-    api.post_to_slack('\n'.join(message_list), creds.webhooks['ryan'])
+    # api.post_to_slack('\n'.join(message_list), creds.webhooks['ryan'])
     # api.post_to_slack('\n'.join(message_list), creds.webhooks['mark'])
-    # api.post_to_slack('\n'.join(message_list), creds.webhooks['roster_police'])
+    api.post_to_slack('\n'.join(message_list), creds.webhooks['roster_police'])
     
 
 
 
 
 
+def main():
+
+    # get all the teams from yahoo and assign teams to managers.
+    do_league_manager_recon()
+
+    # get all the results from weekly matchups
+    do_matchup_recon()
+
+    # Bodos
+    # sync_transactions('2002')
+    # sync_transactions('2003')
+    # sync_transactions('2004')
+    # sync_transactions('2005')
+    # sync_transactions('2006')
+    # sync_transactions('2007')
+    # sync_transactions('2008')
+    # sync_transactions('2009')
+    # sync_transactions('2010')
+    # sync_transactions('2011')
+    # sync_transactions('2012')
+    # sync_transactions('2013')
+    # sync_transactions('2014')
+    # sync_transactions('2015')
+    # sync_transactions('2016')
+    # sync_transactions('2017')
+    # sync_transactions('2018')
+    # sync_transactions('2019')
+    # sync_transactions('2020')
+    # sync_transactions('2021')
+    # sync_transactions('2022')
+    # sync_transactions('2023')
 
 
-
-# do_league_manager_recon()
-# do_matchup_recon()
-
-
-# sync_transactions('2002')
-# sync_transactions('2003')
-# sync_transactions('2004')
-# sync_transactions('2005')
-# sync_transactions('2006')
-# sync_transactions('2007')
-# sync_transactions('2008')
-# sync_transactions('2009')
-# sync_transactions('2010')
-# sync_transactions('2011')
-# sync_transactions('2012')
-# sync_transactions('2013')
-# sync_transactions('2014')
-# sync_transactions('2015')
-# sync_transactions('2016')
-# sync_transactions('2017')
-# sync_transactions('2018')
-# sync_transactions('2019')
+    # Friends
+    # sync_transactions('2005')
+    # sync_transactions('2006')
+    # sync_transactions('2007')
+    # sync_transactions('2008')
+    # sync_transactions('2009')
+    # sync_transactions('2010')
+    # sync_transactions('2011')
+    # sync_transactions('2012')
+    # sync_transactions('2013')
+    # sync_transactions('2014')
+    # # sync_transactions('2015') ESPN year
+    # sync_transactions('2016')
+    # sync_transactions('2017')
+    # sync_transactions('2018')
+    # sync_transactions('2019')
+    # sync_transactions('2020')
+    # sync_transactions('2021')
+    # sync_transactions('2022')
+    # sync_transactions('2023')
 
 
-# get_scoreboard_for_league_week('2018', 16)
+    # get_scoreboard_for_league_week('2018', 16)
 
-# update_league_standings('2020')
-do_league_standings_recon()
+    # update_league_standings('2020')
+    do_league_standings_recon()
 
-# sync_rosters()
+    # sync_rosters()
 
-# enforce_roster_rules()
+    # enforce_roster_rules()
 
-
+if __name__ == '__main__':
+    main()
 
