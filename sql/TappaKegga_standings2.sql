@@ -1,4 +1,5 @@
-SELECT * FROM TappaKegga.league_standings;
+use TappaKegga;
+use Bodos;
 
 # regular season wins - average
 select m.name, avg(ls.regular_season_wins) from league_standings ls
@@ -17,7 +18,7 @@ group by m.id;
 select m.name, count(*), x1.count from league_standings ls
 join manager_league_team_assignment mlta on mlta.team_key=ls.team_key
 join manager m on m.id=mlta.manager_id
-join (SELECT m.id, count(*) as count FROM TappaKegga.manager_league_team_assignment mlta
+join (SELECT m.id, count(*) as count FROM manager_league_team_assignment mlta
 join manager m on mlta.manager_id=m.id
 group by manager_id) x1
 where ls.is_clinched_playoff=1
@@ -29,7 +30,7 @@ select m.name, count(*) as 'made_playoffs', x1.count as 'seasons_played', CAST( 
 from league_standings ls
 join manager_league_team_assignment mlta on mlta.team_key=ls.team_key
 join manager m on m.id=mlta.manager_id
-join (SELECT m.id, count(*) as count FROM TappaKegga.manager_league_team_assignment mlta
+join (SELECT m.id, count(*) as count FROM manager_league_team_assignment mlta
 join manager m on mlta.manager_id=m.id
 group by manager_id) x1
 where ls.is_clinched_playoff=1
