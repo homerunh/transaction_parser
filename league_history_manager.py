@@ -61,11 +61,12 @@ def pull_tappa_kegga():
 
 
 def main():
+    print('running main:')
     # run below to setup the DB from scratch
     # mysql -uroot -p<passwordHERE> < sql/Bodos_create.sql
     # then double check creds.py to be sure you hit Bodos DB
     # then run the script
-    pull_bodos()
+    # pull_bodos()
 
     # run below to setup the DB from scratch
     # mysql -uroot -p<passwordHERE> < sql/TappaKegga_create.sql
