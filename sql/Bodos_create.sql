@@ -47,7 +47,10 @@ insert ignore into `manager` VALUES
 (30, "Keith Harrington", ""),
 (31, "Cavin Keys", ""),
 (32, "Tucker Titus", ""),
-(33, "Gene", "");
+(33, "Gene", ""),
+(34, "Pete", ""),
+(35, "Ross", "");
+
 
 create table league_details (
 	`league_key` varchar(128) NOT NULL,

@@ -82,7 +82,7 @@ class team_manager(object):
     elif self.guid == 'NQMIKI3H5E7LEX3UOKCKXRYF5I':
       return 19
     # 20 - Anuj Singh 
-    elif self.guid == 'STYSC63WV4MS2CRFZK65TCPZNI':
+    elif self.guid == 'STYSC63WV4MS2CRFZK65TCPZNI' or self.team_key == '153.l.448193.t.7' or self.team_key == '175.l.352233.t.7' or self.team_key == '199.l.132731.t.8' or self.team_key == '222.l.121923.t.1' or self.team_key == '242.l.73651.t.1' or self.team_key == '257.l.49695.t.8' or self.team_key == '273.l.102516.t.8' or self.team_key == '314.l.23104.t.8' or self.team_key ==  '331.l.83583.t.8' or self.team_key ==  '348.l.252077.t.4' or self.team_key =='359.l.96095.t.7' or self.team_key == '371.l.157703.t.5' or self.team_key == '380.l.192099.t.6':
       return 20
     # 21 - Austin Morris
     elif self.team_key == '153.l.448193.t.8':
@@ -123,5 +123,14 @@ class team_manager(object):
     # 33 - Gene
     elif self.guid == 'BXCA7D4HOKMHW5RS3HKEJPDYOM':
       return 33
+    # 33 - Gene
+    elif self.guid == 'BXCA7D4HOKMHW5RS3HKEJPDYOM':
+      return 33
+    # 34 - Pete
+    elif self.guid == 'TSON55CNYDIZECRPDIHSIFBXJI':
+      return 34
+    # 35 - Ross
+    elif self.guid == 'DCE5EHY64FYRKMGRXD4UJ5SJAI':
+      return 35
     else:
       return -1

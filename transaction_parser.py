@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import pymysql
 import datetime
 import json
@@ -369,18 +367,18 @@ def get_league_details_and_managers(league_id):
 
         team_key = teams[str(i)]['team'][0][0]['team_key']
         team_name = teams[str(i)]['team'][0][2]['name']
-        number_of_moves = int(teams[str(i)]['team'][0][9]['number_of_moves'])
-        number_of_trades = int(teams[str(i)]['team'][0][10]['number_of_trades'])
+        number_of_moves = int(teams[str(i)]['team'][0][10]['number_of_moves'])
+        number_of_trades = int(teams[str(i)]['team'][0][11]['number_of_trades'])
         try:
-            nickname = teams[str(i)]['team'][0][20]['managers'][0]['manager']['nickname']
+            nickname = teams[str(i)]['team'][0][23]['managers'][0]['manager']['nickname']
         except:
             nickname = 'NONE'
         try:
-            guid = teams[str(i)]['team'][0][20]['managers'][0]['manager']['guid']
+            guid = teams[str(i)]['team'][0][23]['managers'][0]['manager']['guid']
         except:
             guid = 'NONE'
         try:
-            email = teams[str(i)]['team'][0][20]['managers'][0]['manager']['email']
+            email = teams[str(i)]['team'][0][23]['managers'][0]['manager']['email']
         except:
             email = 'NONE'
 
@@ -628,7 +626,7 @@ def main():
     # get_scoreboard_for_league_week('2018', 16)
 
     # update_league_standings('2020')
-    do_league_standings_recon()
+    # do_league_standings_recon()
 
     # sync_rosters()
 

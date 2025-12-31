@@ -3,11 +3,11 @@ from transaction_parser import *
 
 ## manager assignment
 def bodos_league_manager_recon_and_assignment():
-    _league_manager_recon_and_assignment(constants.BODOS_LEAGUE_LOOKUP)
+    _league_manager_recon_and_assignment(constants.LEAGUE_LOOKUP)
 
 
 def tappa_kegga_league_manager_recon_and_assignment():
-    _league_manager_recon_and_assignment(constants.TAPPA_KEGGA_LEAGUE_LOOKUP)
+    _league_manager_recon_and_assignment(constants.LEAGUE_LOOKUP)
 
 
 def _league_manager_recon_and_assignment(league_lookup_map):
@@ -19,11 +19,11 @@ def _league_manager_recon_and_assignment(league_lookup_map):
 
 ## weekly matchups (db based)
 def bodos_league_weekly_matchups():
-    _league_weekly_matchups(constants.BODOS_LEAGUE_LOOKUP)
+    _league_weekly_matchups(constants.LEAGUE_LOOKUP)
 
 
 def tappa_kegge_league_weekly_matchups():
-    _league_weekly_matchups(constants.TAPPA_KEGGA_LEAGUE_LOOKUP)
+    _league_weekly_matchups(constants.LEAGUE_LOOKUP)
 
 
 def _league_weekly_matchups(league_lookup_map):
@@ -36,11 +36,11 @@ def _league_weekly_matchups(league_lookup_map):
 
 ## standings
 def bodos_league_standings():
-    _league_standings(constants.BODOS_LEAGUE_LOOKUP)
+    _league_standings(constants.LEAGUE_LOOKUP)
 
 
 def tappa_kegga_league_standings():
-    _league_standings(constants.TAPPA_KEGGA_LEAGUE_LOOKUP)
+    _league_standings(constants.LEAGUE_LOOKUP)
 
 
 def _league_standings(league_lookup_map):
@@ -66,7 +66,7 @@ def main():
     # mysql -uroot -p<passwordHERE> < sql/Bodos_create.sql
     # then double check creds.py to be sure you hit Bodos DB
     # then run the script
-    # pull_bodos()
+    pull_bodos()
 
     # run below to setup the DB from scratch
     # mysql -uroot -p<passwordHERE> < sql/TappaKegga_create.sql
